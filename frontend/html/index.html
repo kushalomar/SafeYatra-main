@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeYatra AI</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://kit.fontawesome.com/4636c07b63.js"></script>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-shield fa-lg fa-canvas-square" style="color: rgb(255, 255, 255);"></i>
+            </div>
+            <span>SafeYatra AI</span>
+        </div>
+
+        <div class="top-icons">
+            <div>
+                <i class="fa-regular fa-bell fa-lg"></i>
+                <div class="img"></div>
+            </div>
+        </div>
+    </header>
+    <main>
+
+        <!-- Personal information -->
+
+        <div class="personal-info">
+            <div>
+                <span class="greeting-tag" id="timeGreetingTag">Good morning 🌅</span>
+                <h2 class="user-name-title">Namaste, Tourist!</h2>
+                <div class="user-location-row">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span id="userGreetingLocation">Loading Location...</span>
+                </div>
+            </div>
+            <div class="personal-status-bar">
+                <span class="dot-pulse-green"></span>
+                <span>Active Travel Session • Real-time Monitoring</span>
+            </div>
+        </div>
+
+        <!-- Id- details  -->
+
+        <div class="id-details">
+            <div>
+                <span class="id-header-label">SAFE YATRA CARD</span>
+                <h3 id="displayTouristNameIndex" class="id-user-name">Loading...</h3>
+
+                <div class="id-verified-badge">
+                    <i class="fa-solid fa-circle-check" style="color: #6EE7B7;"></i>
+                    <span>Verified User</span>
+                </div>
+                <p class="id-validity-text">Valid: Aug 2026 – Nov 2026</p>
+            </div>
+
+            <a href="profile.html" class="view-id-btn">
+                <span>View Full ID</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Safety Status -->
+
+        <div class="safety-status">
+            <!-- Header section -->
+            <div class="safety-header-top">
+                <div>
+                    <span class="safety-sub-label">AI SAFETY STATUS</span>
+                    <h2 class="location-title" id="locationCityState">Agra, Uttar Pradesh</h2>
+                </div>
+                <div class="live-pill-badge">
+                    <span class="live-dot-green"></span>
+                    <span>Live</span>
+                </div>
+            </div>
+
+            <!-- Score & Risk Meters Grid -->
+            <div class="safety-body-grid">
+                <!-- Donut Chart Ring -->
+                <div class="donut-chart-box">
+                    <svg class="donut-svg" width="120" height="120" viewBox="0 0 120 120">
+                        <circle class="donut-bg" cx="60" cy="60" r="48" stroke-width="9" fill="none" />
+                        <circle id="scoreRingCircle" class="donut-progress" cx="60" cy="60" r="48" stroke-width="9"
+                            fill="none" />
+                    </svg>
+                    <div class="donut-center-text">
+                        <span class="donut-score" id="safetyScoreValue">78</span>
+                        <span class="donut-tag" id="safetyScoreTag">SAFE</span>
+                    </div>
+                </div>
+
+                <!-- Right Stats & Meters -->
+                <div class="safety-stats-info">
+                    <div class="score-ratio-row">
+                        <span class="score-main"><span id="scoreNum">78</span><span
+                                class="score-denom">/100</span></span>
+                    </div>
+                    <div class="safety-rating-label" id="safetyRatingText">Moderately Safe</div>
+                    <div class="ai-confidence-text">AI Confidence: <span id="confidenceValue">94%</span></div>
+
+                    <!-- Risk Meters -->
+                    <div class="risk-meters-list">
+                        <div class="meter-item">
+                            <span class="meter-label">Crime Level</span>
+                            <div class="meter-bar-track">
+                                <div id="crimeBar" class="meter-bar-fill green-bar" style="width: 32%;"></div>
+                            </div>
+                            <span id="crimeVal" class="meter-value val-green">32</span>
+                        </div>
+
+                        <div class="meter-item">
+                            <span class="meter-label">Weather Risk</span>
+                            <div class="meter-bar-track">
+                                <div id="weatherBar" class="meter-bar-fill blue-bar" style="width: 18%;"></div>
+                            </div>
+                            <span id="weatherVal" class="meter-value val-blue">18</span>
+                        </div>
+
+                        <div class="meter-item">
+                            <span class="meter-label">Terrain Risk</span>
+                            <div class="meter-bar-track">
+                                <div id="terrainBar" class="meter-bar-fill orange-bar" style="width: 25%;"></div>
+                            </div>
+                            <span id="terrainVal" class="meter-value val-orange">25</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Two Cards (Weather & Advisory) -->
+            <div class="safety-bottom-cards">
+                <div class="pill-card weather-pill" id="statusWeatherItem" title="Click to open Weather Map">
+                    <div class="pill-icon weather-icon">
+                        <i id="weatherIconEl" class="fa-solid fa-cloud"></i>
+                    </div>
+                    <div class="pill-details">
+                        <span class="pill-title">Weather</span>
+                        <span class="pill-val" id="weatherTempCond">34°C, Sunny</span>
+                    </div>
+                </div>
+
+                <div class="pill-card advisory-pill">
+                    <div class="pill-icon advisory-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="pill-details">
+                        <span class="pill-title">Advisory</span>
+                        <span class="pill-val" id="advisoryText">Heat Alert</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Emergency Services Status List -->
+            <div class="status-list">
+                <div class="status-item" id="statusThreatsItem">
+                    <div class="status-item-content">
+                        <i class="fa-solid fa-check status-icon"></i>
+                        <span>No active threats detected in area</span>
+                    </div>
+                </div>
+
+                <div class="status-item" id="statusPoliceItem" title="Click to view Police Station on Google Maps">
+                    <div class="status-item-content">
+                        <i class="fa-solid fa-shield-halved status-icon police-icon"></i>
+                        <span id="statusPoliceText">Police station within 1.2 km</span>
+                    </div>
+                    <i class="fa-solid fa-location-dot map-link-icon"></i>
+                </div>
+
+                <div class="status-item" id="statusHospitalItem" title="Click to view Hospital on Google Maps">
+                    <div class="status-item-content">
+                        <i class="fa-solid fa-hospital status-icon hospital-icon"></i>
+                        <span id="statusHospitalText">Hospital available within 2.0 km</span>
+                    </div>
+                    <i class="fa-solid fa-location-dot map-link-icon"></i>
+                </div>
+            </div>
+
+            <!-- Footer note -->
+            <div class="safety-card-footer">
+                <span id="lastUpdatedFooter">Last updated: Just now · AI model v3.2</span>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+
+            <h2 class="section-title">Quick Actions</h2>
+
+            <div class="action-grid">
+                <a href="sos.html">
+                    <div class="action-card">
+                        <div class="icon red">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <p>SOS</p>
+                    </div>
+                </a>
+                <a href="map.html">
+                    <div class="action-card">
+                        <div class="icon blue">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <p>Location</p>
+                    </div>
+                </a>
+                <!-- <div class="action-card">
+                    <div class="icon green">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <p>Safe Zones</p>
+                </div> -->
+
+                <div class="action-card" id="hospitalActionCard" style="cursor:pointer;">
+                    <div class="icon pink">
+                        <i class="fa-regular fa-hospital"></i>
+                    </div>
+                    <p>Hospitals</p>
+                </div>
+                <a href="map.html?destination=police" style="text-decoration: none; color: inherit;">
+                    <div class="action-card">
+                        <div class="icon purple">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <p>Police</p>
+                    </div>
+                </a>
+
+                <!-- <div class="action-card">
+                    <div class="icon orange">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <p>Emergency</p>
+                </div> -->
+                <a href="alerts.html">
+                    <div class="action-card">
+                        <div class="icon yellow">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <p>Alerts</p>
+                    </div>
+                </a>
+                <div class="action-card">
+                    <div class="icon cyan">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <p>AI Chat</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ai Assistant -->
+
+        <div class="ai-assistant">
+            <div class="ai-header">
+                <div class="ai-icon">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div>
+                    <h3>AI Travel Assistant</h3>
+                    <p>Your smart travel companion</p>
+                </div>
+            </div>
+
+            <p class="ai-description">
+                Ask me anything about your trip. Get safety alerts, route suggestions, nearby emergency services and
+                travel recommendations instantly.
+            </p>
+            <div class="ai-search">
+                <input type="text" placeholder="Ask AI anything...">
+                <button>
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+
+    <footer>
+        <nav class="bottom-nav">
+
+            <a href="index.html" class="nav-item active">
+                <i class="fa-solid fa-house "></i>
+                <span>Home</span>
+            </a>
+
+            <a href="map.html" class="nav-item">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Map</span>
+            </a>
+
+            <a href="alerts.html" class="nav-item">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Alerts</span>
+            </a>
+
+            <!-- <a href="trips.html" class="nav-item">
+        <i class="fa-solid fa-suitcase"></i>
+        <span>Trips</span>
+    </a> -->
+
+            <a href="profile.html" class="nav-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+            </a>
+
+        </nav>
+    </footer>
+
+    <!-- Firebase SDK Compat v10 -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- SafeYatra Scripts -->
+    <script src="../../backend/firebase-config.js"></script>
+    <script src="../../backend/db.js"></script>
+    <script src="../../backend/index.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeYatra AI - Mobile OTP Login</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="login-page-wrapper">
+
+        <!-- Top Header Logo -->
+        <div class="login-brand-header">
+            <div class="brand-logo-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h2>SafeYatra AI</h2>
+            <p>Smart & Secure Tourist Authentication</p>
+        </div>
+
+        <!-- Main Auth Card -->
+        <div class="auth-card">
+
+            <!-- Invisible Recaptcha Container for Firebase -->
+            <div id="recaptcha-container"></div>
+
+            <!-- STEP 1: Mobile Phone Input Form -->
+            <div id="stepMobile" class="auth-step-panel active">
+                <div class="step-header">
+                    <h3>Mobile Number Login</h3>
+                    <p>Enter your 10-digit mobile number to receive a one-time password (OTP).</p>
+                </div>
+
+                <form id="mobileForm" class="auth-form">
+                    <div class="phone-input-group">
+                        <div class="country-code-box">
+                            <span class="flag-icon">🇮🇳</span>
+                            <span class="code-text">+91</span>
+                        </div>
+                        <input type="tel" id="inputMobileNumber" placeholder="Enter mobile number" maxlength="10"
+                            required autocomplete="tel">
+                    </div>
+
+                    <button type="submit" id="sendOtpBtn" class="btn-primary-auth">
+                        <span>Send OTP Code</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+
+                <div class="security-note">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Secured by Firebase Phone Authentication</span>
+                </div>
+                <div id="recaptcha-container"></div>
+            </div>
+
+            <!-- STEP 2: 6-Digit OTP Verification Form -->
+            <div id="stepOtp" class="auth-step-panel">
+                <div class="step-header">
+                    <h3>Enter 6-Digit OTP</h3>
+                    <p>We've sent a 6-digit verification code to <strong id="targetPhoneText">+91 XXXXX XXXXX</strong>
+                    </p>
+                </div>
+
+                <form id="otpForm" class="auth-form">
+                    <div class="otp-inputs-grid">
+                        <input type="text" maxlength="1" class="otp-box" id="otp1" autofocus autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-box" id="otp2" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-box" id="otp3" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-box" id="otp4" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-box" id="otp5" autocomplete="off">
+                        <input type="text" maxlength="1" class="otp-box" id="otp6" autocomplete="off">
+                    </div>
+
+                    <button type="submit" id="verifyOtpBtn" class="btn-primary-auth">
+                        <span>Verify & Continue</span>
+                        <i class="fa-solid fa-circle-check"></i>
+                    </button>
+                </form>
+
+                <div class="resend-timer-wrap">
+                    <span>Didn't receive code?</span>
+                    <button id="resendOtpBtn" class="btn-link" disabled>Resend in <span
+                            id="resendTimer">30</span>s</button>
+                </div>
+
+                <button id="changePhoneBtn" class="btn-change-phone">
+                    <i class="fa-solid fa-arrow-left"></i> Change Mobile Number
+                </button>
+            </div>
+
+            <!-- STEP 3: New User Registration Form -->
+            <div id="stepRegister" class="auth-step-panel">
+                <div class="step-header">
+                    <div class="new-user-badge">NEW TOURIST REGISTRATION</div>
+                    <h3>Complete Your Profile</h3>
+                    <p>No account found for this number. Enter your details to create a record in Firebase.</p>
+                </div>
+
+                <form id="regForm" class="auth-form">
+                    <div class="form-group-auth">
+                        <label>Full Name</label>
+                        <input type="text" id="regName" placeholder="e.g. Arjun Sharma" required>
+                    </div>
+
+                    <div class="form-row-2-auth">
+                        <div class="form-group-auth">
+                            <label>Mobile Number</label>
+                            <input type="text" id="regMobile" readonly class="input-readonly">
+                        </div>
+                        <div class="form-group-auth">
+                            <label>Age</label>
+                            <input type="number" id="regAge" placeholder="26" min="1" max="120" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row-2-auth">
+                        <div class="form-group-auth">
+                            <label>Blood Group</label>
+                            <select id="regBloodGroup" required>
+                                <option value="O+">O+</option>
+                                <option value="A+">A+</option>
+                                <option value="B+">B+</option>
+                                <option value="AB+">AB+</option>
+                                <option value="O-">O-</option>
+                                <option value="A-">A-</option>
+                                <option value="B-">B-</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="form-group-auth">
+                            <label>Emergency Contact</label>
+                            <input type="text" id="regEmergency" placeholder="7376712538" value="7376712538" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group-auth">
+                        <label>Email Address</label>
+                        <input type="email" id="regEmail" placeholder="arjun.sharma@email.com" required>
+                    </div>
+
+                    <div class="form-group-auth">
+                        <label>Address / Home Location</label>
+                        <input type="text" id="regAddress" placeholder="Agra, Uttar Pradesh, India" required>
+                    </div>
+
+                    <button type="submit" id="saveRegBtn" class="btn-primary-auth">
+                        <span>Save to Firebase & Continue</span>
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Footer Copyright -->
+        <p class="login-footer-text">SafeYatra AI • Firebase Auth & Firestore Secured</p>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-msg">OTP Sent successfully</div>
+
+    <!-- Firebase SDK Compat v10 -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- SafeYatra Database & Auth Scripts -->
+    <script src="../../backend/firebase-config.js"></script>
+    <script src="../../backend/db.js"></script>
+    <script src="../../backend/login.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SafeYatra AI - Live Safety Alerts and Tourist Advisories for Agra, Uttar Pradesh">
+    <title>Alerts & Advisories - SafeYatra AI</title>
+    
+    <!-- SafeYatra Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/alerts.css">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://kit.fontawesome.com/4636c07b63.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Header Section with Sticky Title & Filter Pills -->
+    <header class="alerts-header-wrapper">
+        <div class="alerts-header-top">
+            <h1 class="alerts-page-title">Alerts & Advisories</h1>
+            <span class="badge-new" id="badgeNewCount">3 New</span>
+        </div>
+
+        <!-- Filter Pills Bar -->
+        <nav class="filter-pills-container" aria-label="Filter advisories by category">
+            <button class="filter-pill active" data-filter="All" id="filterAllBtn">
+                <span>All</span>
+            </button>
+            <button class="filter-pill" data-filter="Safety" id="filterSafetyBtn">
+                <i class="fa-solid fa-shield-halved" style="font-size: 12px;"></i>
+                <span>Safety</span>
+            </button>
+            <button class="filter-pill" data-filter="Weather" id="filterWeatherBtn">
+                <i class="fa-solid fa-cloud-sun" style="font-size: 12px;"></i>
+                <span>Weather</span>
+            </button>
+            <button class="filter-pill" data-filter="Traffic" id="filterTrafficBtn">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 12px;"></i>
+                <span>Traffic</span>
+            </button>
+            <button class="filter-pill" data-filter="Info" id="filterInfoBtn">
+                <i class="fa-solid fa-circle-info" style="font-size: 12px;"></i>
+                <span>Info</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Body Container -->
+    <main class="alerts-main-container">
+
+        <!-- Prominent Green Safety Level Card -->
+        <section class="safety-level-card" aria-label="Current Safety Status Summary">
+            <div class="safety-card-bg-pattern"></div>
+            
+            <div class="safety-card-header">
+                <div class="safety-card-info">
+                    <span class="safety-card-label">CURRENT SAFETY LEVEL</span>
+                    <h2 class="safety-card-location">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="locationCityState">Detecting Location...</span>
+                    </h2>
+
+                    <!-- 3 Status Indicator Badges -->
+                    <div class="safety-status-indicators">
+                        <span class="status-indicator-tag tag-critical">
+                            <span class="dot"></span>
+                            <span id="criticalCountTag">1 Critical</span>
+                        </span>
+                        <span class="status-indicator-tag tag-warning">
+                            <span class="dot"></span>
+                            <span id="warningCountTag">2 Warnings</span>
+                        </span>
+                        <span class="status-indicator-tag tag-info">
+                            <span class="dot"></span>
+                            <span id="infoCountTag">3 Info</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right Donut Progress Indicator -->
+                <div class="safety-score-widget">
+                    <div class="donut-svg-wrapper">
+                        <svg width="82" height="82" viewBox="0 0 82 82">
+                            <circle class="donut-bg-ring" cx="41" cy="41" r="36" stroke-width="7" fill="none" />
+                            <circle class="donut-progress-ring" id="donutProgressRing" cx="41" cy="41" r="36" stroke-width="7" fill="none" />
+                        </svg>
+                        <div class="donut-inner-content">
+                            <span class="donut-inner-score" id="safetyScoreNum">88</span>
+                            <span class="donut-inner-label" id="safetyScoreTag">SAFE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advisory Alerts List Header -->
+        <div class="alerts-list-header">
+            <h2 class="alerts-list-title">Live Safety Advisories</h2>
+            <span class="alerts-count-tag" id="activeAlertsCountText">Showing 6 advisories</span>
+        </div>
+
+        <!-- Dynamic Alerts Container -->
+        <section class="alerts-list-container" id="alertsContainer" aria-live="polite">
+            <!-- Alert Cards will be rendered dynamically by alerts.js -->
+        </section>
+
+    </main>
+
+    <!-- Alert Detail Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <div class="modal-icon" id="modalIconBox">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <div>
+                        <h3 class="modal-title" id="modalTitle">Advisory Title</h3>
+                        <span class="modal-time" id="modalTime">2 min ago</span>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p class="modal-description" id="modalDescription">Detailed information about this advisory will appear here.</p>
+                
+                <div class="modal-meta-box">
+                    <div class="meta-row">
+                        <span class="meta-label">Advisory Type:</span>
+                        <span class="meta-val" id="modalTypeVal">Weather</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Severity Level:</span>
+                        <span class="meta-val" id="modalSeverityVal">Warning</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Monitored Region:</span>
+                        <span class="meta-val" id="modalRegionVal">Detecting Region...</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Verified Source:</span>
+                        <span class="meta-val">SafeYatra AI Safety Network</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal-secondary" id="modalSecondaryClose">Close</button>
+                <button class="btn-modal-primary" id="modalActionBtn">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Take Action</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <footer>
+        <nav class="bottom-nav" aria-label="Main Navigation">
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a href="map.html" class="nav-item">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Map</span>
+            </a>
+
+            <a href="alerts.html" class="nav-item active">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Alerts</span>
+            </a>
+
+            <!-- <a href="trips.html" class="nav-item">
+                <i class="fa-solid fa-suitcase"></i>
+                <span>Trips</span>
+            </a> -->
+
+            <a href="profile.html" class="nav-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </footer>
+
+    <!-- Firebase SDK Compat v10 -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- SafeYatra Scripts -->
+    <script src="../../backend/firebase-config.js"></script>
+    <script src="../../backend/db.js"></script>
+    <script src="../../backend/alerts.js"></script>
+
+</body>
+</html>

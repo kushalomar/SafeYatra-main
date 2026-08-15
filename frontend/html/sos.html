@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS</title>
+    <link rel="stylesheet" href="../css/sos.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://kit.fontawesome.com/4636c07b63.js"></script>
+</head>
+
+<body>
+    <header class="emergency-header">
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <h1>Emergency Center</h1>
+            <p>SSafeYatra AI 24/7 Rapid Emergency Response</p>
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                <span id="locationStatus">Live Geolocation Active</span>
+            </div>
+        </div>
+    </header>
+    <main class="sos-main-content">
+        <!-- Center SOS Press & Hold Card -->
+        <div class="sos-container">
+            <div class="sos-card">
+                <div class="sos-ring-wrapper">
+                    <!-- SVG Progress Circle -->
+                    <svg class="progress-ring-svg" width="190" height="190">
+                        <circle class="progress-ring-bg" cx="95" cy="95" r="88" stroke-width="10" fill="transparent" />
+                        <circle id="progressCircle" class="progress-ring-circle" cx="95" cy="95" r="88"
+                            stroke-width="10" fill="transparent" />
+                    </svg>
+
+                    <!-- Interactive SOS Button -->
+                    <button id="sosBtn" class="sos-btn">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span class="sos-label">SOS</span>
+                        <span id="timerText" class="timer-label">HOLD 3S</span>
+                    </button>
+                </div>
+
+                <h2>Emergency SOS</h2>
+                <p>Press and hold for 3 seconds to dispatch immediate emergency alerts with your live location.</p>
+
+                <!-- Live Geolocation Coordinates Badge -->
+                <div class="live-location-badge">
+                    <div>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>GPS Coordinates:</span>
+                    </div>
+                    <span id="coordsText" class="coords-text">Fetching...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Primary Emergency Contact Highlight Card -->
+        <div class="section-title-wrap">
+            <h3>Primary Emergency Contact</h3>
+            <span class="badge">DEFAULT ALERT</span>
+        </div>
+
+        <div class="primary-contact-card">
+            <div class="contact-info-header">
+                <div class="contact-avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div class="contact-details">
+                    <h4>Emergency Contact</h4>
+                    <p>Configured for Instant Live Location SMS</p>
+                    <!-- <div class="contact-number">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>+91 7376712538</span>
+                    </div> -->
+                </div>
+            </div>
+            <div class="contact-actions">
+                <a id="smsPrimaryBtn" href="sms:7376712538" class="contact-btn btn-sms">
+                    <i class="fa-solid fa-comment-sms"></i> Send Location SMS
+                </a>
+                <a id="callPrimaryBtn" href="tel:7376712538" class="contact-btn btn-call">
+                    <i class="fa-solid fa-phone"></i> Call Contact
+                </a>
+            </div>
+        </div>
+
+        <!-- Safety Toolkit Section -->
+        <div class="section-title-wrap">
+            <h3>Safety Toolkit</h3>
+        </div>
+
+        <div class="toolkit-grid">
+
+            <div id="shareLocBtn" class="toolkit-card">
+                <div class="toolkit-icon blue">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </div>
+                <span>Share Location</span>
+            </div>
+
+            <div id="medicalIdBtn" class="toolkit-card">
+                <div class="toolkit-icon green">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+                <span>Medical ID</span>
+            </div>
+        </div>
+
+        <!-- Emergency Helplines Quick Dials -->
+        <div class="section-title-wrap">
+            <h3>Direct Emergency Helplines</h3>
+        </div>
+
+        <div class="helpline-grid">
+            <a href="tel:112" class="helpline-card">
+                <div class="helpline-icon icon-police">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="helpline-meta">
+                    <h5>National Police</h5>
+                    <span>112</span>
+                </div>
+            </a>
+
+            <a href="tel:108" class="helpline-card">
+                <div class="helpline-icon icon-ambulance">
+                    <i class="fa-solid fa-truck-medical"></i>
+                </div>
+                <div class="helpline-meta">
+                    <h5>Ambulance</h5>
+                    <span>108 / 102</span>
+                </div>
+            </a>
+
+            <a href="tel:1091" class="helpline-card">
+                <div class="helpline-icon icon-women">
+                    <i class="fa-solid fa-person-dress"></i>
+                </div>
+                <div class="helpline-meta">
+                    <h5>Women Helpline</h5>
+                    <span>1091</span>
+                </div>
+            </a>
+
+            <a href="tel:101" class="helpline-card">
+                <div class="helpline-icon icon-fire">
+                    <i class="fa-solid fa-fire-extinguisher"></i>
+                </div>
+                <div class="helpline-meta">
+                    <h5>Fire Brigade</h5>
+                    <span>101</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- Active SOS Triggered Emergency Modal Overlay -->
+    <div id="sosModal" class="modal-overlay">
+        <div class="modal-box sos-triggered-box">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <h2>SOS ALERT DISPATCHED!</h2>
+            <p>Siren activated & location link prepared for emergency contact <strong>+91 7376712538</strong>.</p>
+            
+            <div class="auto-countdown-pill">
+                Auto SMS Dispatching in <span id="modalCountdown">10</span>s
+            </div>
+
+            <div class="modal-actions">
+                <a id="modalSmsBtn" href="sms:7376712538" class="btn-modal-primary">
+                    <i class="fa-solid fa-paper-plane"></i> Send SMS Live Location Now
+                </a>
+                <a id="modalCallBtn" href="tel:7376712538" class="btn-modal-primary" style="background:#22C55E;">
+                    <i class="fa-solid fa-phone"></i> Call Emergency Contact Now
+                </a>
+                <button id="modalCancelBtn" class="btn-modal-secondary">
+                    Cancel False Alarm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical ID Modal -->
+    <div id="medicalIdModal" class="modal-overlay">
+        <div class="modal-box" style="text-align:left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3 style="font-size:18px; font-weight:700;"><i class="fa-solid fa-heart-pulse"
+                        style="color:#DC2626; margin-right:8px;"></i>Medical Emergency ID</h3>
+                <button id="closeMedicalModal"
+                    style="background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:#334155;">
+                <div style="padding:10px; background:#F8FAFC; border-radius:10px;">
+                    <strong>Blood Group:</strong> O+ (Universal Donor)
+                </div>
+
+                <div style="padding:10px; background:#F8FAFC; border-radius:10px;">
+                    <strong>Known Allergies:</strong> None reported
+                </div>
+                <div style="padding:10px; background:#F8FAFC; border-radius:10px;">
+                    <strong>Emergency Note:</strong> Please notify emergency contacts immediately.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-msg">Notification message</div>
+
+
+    <!-- footer -->
+
+    <footer>
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item active">
+                <i class="fa-solid fa-house "></i>
+                <span>Home</span>
+            </a>
+
+            <a href="map.html" class="nav-item">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Map</span>
+            </a>
+
+            <a href="alerts.html" class="nav-item">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Alerts</span>
+            </a>
+
+            <a href="profile.html" class="nav-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </footer>
+</body>
+<!-- Firebase SDK Compat v10 -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<!-- SafeYatra Scripts -->
+<script src="../../backend/firebase-config.js"></script>
+<script src="../../backend/db.js"></script>
+<script src="../../backend/sos.js"></script>
+
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://kit.fontawesome.com/4636c07b63.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main Profile Container -->
+    <main class="profile-container">
+
+        <!-- 1. Top Green Profile Header Banner -->
+        <div class="profile-header-card">
+            <div class="profile-header-content">
+                <div class="avatar-wrapper">
+                    <!-- User Avatar Image -->
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="User Avatar" class="user-avatar-img">
+                </div>
+
+                <div class="user-main-info">
+                    <h2 id="displayUserName" class="user-full-name">Loading Profile...</h2>
+                    <p id="displayUserMobile" class="user-contact-text"></p>
+                    <p id="displayUserEmail" class="user-contact-text"></p>
+
+                    <div class="digilocker-badge">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Verified</span>
+                    </div>
+                </div>
+
+                <button id="editProfileBtn" class="edit-profile-btn" title="Edit Profile">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. Blue Tourist ID Card (No QR Code) -->
+        <div class="tourist-id-card">
+            <div class="tourist-id-details">
+                <span class="id-country-tag">SAFE YATRA • VERIFIED USER</span>
+                <h3 id="displayTouristName" class="id-name"></h3>
+                <p class="id-detail-line valid-till">Status: Active & Protected</p>
+            </div>
+        </div>
+
+        <!-- 3.5 Personal Database Details Card -->
+        <div class="settings-section-wrap">
+            <h3 class="settings-section-title">Personal Information</h3>
+            <div class="settings-card-list">
+                <div class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-blue">
+                            <i class="fa-solid fa-cake-candles"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Age</h4>
+                            <p id="displayUserAge">Fetching...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-red" style="background:#FEE2E2; color:#DC2626;">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Blood Group</h4>
+                            <p id="displayUserBlood">O+</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-orange">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Emergency Contact</h4>
+                            <p id="displayUserEmergency"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-green">
+                            <i class="fa-solid fa-house-chimney"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Address / Location</h4>
+                            <p id="displayUserAddress">Fetching...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Settings & Preferences Section -->
+        <div class="settings-section-wrap">
+            <h3 class="settings-section-title">Settings & Preferences</h3>
+
+            <div class="settings-card-list">
+                <!-- Item 1: Notifications -->
+                <a href="#" class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-blue">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Notifications</h4>
+                            <p>All alerts on</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
+                </a>
+
+                <!-- Item 2: Live Location -->
+                <a href="#" class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-green">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Live Location</h4>
+                            <p>Enabled · 24/7</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
+                </a>
+
+                <!-- Item 3: Emergency Contacts -->
+                <a href="#" class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-orange">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Emergency Contacts</h4>
+                            <p id="emergencyCountText">Emergency: 7376712538</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
+                </a>
+
+                <!-- Item 4: Privacy & Data -->
+                <a href="#" class="setting-row-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon-box icon-purple">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="setting-text-meta">
+                            <h4>Privacy & Data</h4>
+                            <p>Govt. secured</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- 5. Government Compliance Banner -->
+        <div class="ministry-compliance-card">
+            <div class="ministry-icon-box">
+                <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="ministry-text-meta">
+                <h4>Ministry of Tourism, India</h4>
+                <p class="initiative-sub">Incredible India · Digital India Initiative</p>
+                <small class="law-act-text">Data secured under IT Act 2000 · Section 43A</small>
+            </div>
+        </div>
+
+        <!-- 6. Sign Out Button -->
+        <button class="sign-out-btn">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Sign Out</span>
+        </button>
+
+        <!-- Footer Copyright Note -->
+        <p class="profile-footer-note">SafeYatra AI v3.2.1 - © 2026 Ministry of Tourism, India</p>
+
+    </main>
+
+    <!-- Interactive Edit Profile Modal -->
+    <div id="editProfileModal" class="modal-overlay">
+        <div class="modal-box profile-modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-pen" style="color:#2563EB; margin-right:8px;"></i>Edit Tourist Profile</h3>
+                <button id="closeProfileModal" class="close-btn">&times;</button>
+            </div>
+
+            <form id="profileForm" class="profile-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="inputName" placeholder="e.g. Arjun Sharma" required>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="text" id="inputMobile" placeholder="+91 98765 43210" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" id="inputAge" placeholder="26" min="1" max="120" required>
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Blood Group</label>
+                        <select id="inputBloodGroup">
+                            <option value="O+">O+</option>
+                            <option value="A+">A+</option>
+                            <option value="B+">B+</option>
+                            <option value="AB+">AB+</option>
+                            <option value="O-">O-</option>
+                            <option value="A-">A-</option>
+                            <option value="B-">B-</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Emergency Contact</label>
+                        <input type="text" id="inputEmergency" placeholder="7376712538" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="inputEmail" placeholder="arjun.sharma@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Address / Location</label>
+                    <input type="text" id="inputAddress" placeholder="Agra, Uttar Pradesh, India" required>
+                </div>
+
+                <button type="submit" class="btn-save-profile">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Save Profile to Database
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-msg">Profile Saved!</div>
+
+    <!-- Footer Navigation -->
+    <footer>
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="map.html" class="nav-item">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Map</span>
+            </a>
+            <a href="alerts.html" class="nav-item">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Alerts</span>
+            </a>
+            <a href="profile.html" class="nav-item active">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </footer>
+    <!-- Firebase SDK Compat v10 -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- SafeYatra Scripts -->
+    <script src="../../backend/firebase-config.js"></script>
+    <script src="../../backend/db.js"></script>
+    <script src="../../backend/profile.js"></script>
+</body>
+</html>

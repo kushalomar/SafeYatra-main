@@ -1,0 +1,150 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.topbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 6px;
+    flex-direction: row;
+}
+.icon{
+    background-color: #3f9943;
+    width: 31px;
+    height: 29px;
+}
+.logo, .top-icons>div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo span{
+    margin-left: 6px;
+    color: #2E7D32;
+    font-size: 17px;
+}
+.top-icons .img{
+    width:31px;
+    min-height:20px;
+    margin: 0px 3px 0px 6px;
+    background-image:url("/assests/topbar.avif");
+    background-size:cover;
+    background-repeat:no-repeat;
+
+    /* Adjust these values */
+    background-position:84% 84%;
+}
+/* main css */
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.personal-info{
+    border-radius: 14px;
+    width: 96%;
+    height: 200px;
+    background-color: lightgreen;
+    margin: 6px 0px;
+}
+.id-details{
+    border-radius: 14px;
+    width: 96%;
+    height: 200px;
+    background-color: lightgreen;
+}
+
+
+.quick-actions{
+    margin-top:14px;
+}
+
+.section-title{
+    font-size:18px;
+    font-weight:700;
+    color:#1f2937;
+    margin-bottom:18px;
+}
+
+.action-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+
+}
+
+.action-card{
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+.icon{
+
+    width:56px;
+    height:56px;
+
+    border-radius:18px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:22px;
+
+    transition:.3s;
+}
+
+.action-card:hover .icon{
+
+    transform:translateY(-4px);
+
+}
+
+.action-card p{
+    margin-top:8px;
+
+    font-size:12px;
+
+    text-align:center;
+
+    color:#4b5563;
+
+    font-weight:600;
+
+}
+
+/* Quick actions icon background color */
+
+.red{
+    background-color: #ffebee;
+}
+.blue{
+    background-color: #c0daedbe;
+}
+.green{
+    background-color: #a3d7a7c8;
+}
+.pink{
+    background-color: #ebc2d0d8;
+}
+.purple{
+    background-color: #bcc2e1be;
+}
+.orange{
+    background-color: #f4dfbdd7;
+}
+.yellow{
+    background-color: #e8d185d2;
+}
+.cyan{
+    background-color: #ecbdf3e5;
+}
