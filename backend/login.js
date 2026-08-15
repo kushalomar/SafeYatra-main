@@ -3,6 +3,12 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // If already logged in, redirect straight to index.html
+    if (typeof SafeYatraDB !== 'undefined' && SafeYatraDB.isLoggedIn()) {
+        window.location.href = "index.html";
+        return;
+    }
+
     let confirmationResult = null;
     let recaptchaVerifier = null;
     let targetPhoneNumber = "";

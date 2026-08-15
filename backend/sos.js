@@ -4,6 +4,11 @@
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Auth Guard: Enforce Login
+    if (typeof SafeYatraDB !== 'undefined' && SafeYatraDB.requireAuth) {
+        SafeYatraDB.requireAuth();
+    }
+
     // Primary Emergency Contact Config
     let EMERGENCY_CONTACT = "7376712538";
 

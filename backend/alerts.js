@@ -3,6 +3,11 @@
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Auth Guard: Enforce Login
+    if (typeof SafeYatraDB !== 'undefined' && SafeYatraDB.requireAuth) {
+        SafeYatraDB.requireAuth();
+    }
+
     // Default Fallback Coordinates (Agra, UP)
     let currentLat = 27.1767;
     let currentLng = 78.0081;

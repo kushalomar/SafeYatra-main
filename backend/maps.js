@@ -16,6 +16,11 @@ const routePoints = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Auth Guard: Enforce Login
+    if (typeof SafeYatraDB !== 'undefined' && SafeYatraDB.requireAuth) {
+        SafeYatraDB.requireAuth();
+    }
+
     initializeMap();
     setupSearch();
     setupCurrentLocationBtn();

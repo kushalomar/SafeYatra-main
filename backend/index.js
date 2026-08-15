@@ -1,6 +1,11 @@
 /*SafeYatra AI - Dynamic AI Safety Status & Live Weather Script */
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Enforce Auth Guard (Redirect unauthenticated users to login.html)
+    if (typeof SafeYatraDB !== 'undefined' && SafeYatraDB.requireAuth) {
+        SafeYatraDB.requireAuth();
+    }
+
     // Load live user profile from Firestore / DB
     if (typeof SafeYatraDB !== 'undefined') {
         const userProfile = await SafeYatraDB.getUserProfile();

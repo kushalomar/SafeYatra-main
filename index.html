@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=frontend/html/index.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SafeYatra AI</title>
     <script>
-        window.location.href = "frontend/html/index.html";
+        // Check if user is logged in
+        var loggedMobile = localStorage.getItem('safeyatra_logged_mobile');
+        if (loggedMobile && loggedMobile.trim() !== "") {
+            window.location.href = "frontend/html/index.html";
+        } else {
+            window.location.href = "frontend/html/login.html";
+        }
     </script>
 </head>
 <body>
-    <p>Redirecting to <a href="frontend/html/index.html">SafeYatra AI</a>...</p>
+    <p>Redirecting to <a href="frontend/html/login.html">SafeYatra AI</a>...</p>
 </body>
 </html>
