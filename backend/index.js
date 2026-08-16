@@ -266,12 +266,62 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Click handler for Police Station card -> Google Maps Police Search
+    // ---------------------------------------------------------------
+    // Police Station: Google Maps Search
+    // Uses geolocation to pass the user's position as a hint, then
+    // lets Google Maps handle the nearby police station search & selection.
+    // ---------------------------------------------------------------
+    function openPoliceSearch() {
+        console.log("Police button clicked");
+
+        const baseQuery = encodeURIComponent("police station");
+        const fallbackUrl = `https://www.google.com/maps/search/?api=1&query=${baseQuery}`;
+
+        function launchMaps(url) {
+            console.log("Opening Google Maps police search:", url);
+            window.open(url, '_blank');
+        }
+
+        if (!navigator.geolocation) {
+            // Geolocation not supported by this browser/WebView
+            console.warn("Geolocation not supported. Opening Google Maps without location hint.");
+            launchMaps(fallbackUrl);
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                console.log("Current location:", lat, lng);
+                // Google Maps Search URL with location hint via the `near` parameter.
+                // This tells Google Maps to centre the police search near the user.
+                const url = `https://www.google.com/maps/search/?api=1&query=${baseQuery}&near=${lat},${lng}`;
+                launchMaps(url);
+            },
+            (error) => {
+                // Handle all geolocation errors gracefully — button still works
+                let reason = "Unknown error";
+                if (error.code === error.PERMISSION_DENIED) reason = "Permission denied";
+                else if (error.code === error.POSITION_UNAVAILABLE) reason = "Position unavailable";
+                else if (error.code === error.TIMEOUT) reason = "Timeout";
+                console.warn(`Geolocation error (${reason}). Falling back to plain police search.`);
+                launchMaps(fallbackUrl);
+            },
+            { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 }
+        );
+    }
+
+    // Wire up: Status card police icon (Safety Status section)
     const statusPoliceItem = document.getElementById('statusPoliceItem');
     if (statusPoliceItem) {
-        statusPoliceItem.addEventListener('click', () => {
-            window.location.href = 'map.html?destination=police';
-        });
+        statusPoliceItem.addEventListener('click', openPoliceSearch);
+    }
+
+    // Wire up: Quick Action "Police" card (Quick Actions section)
+    const policeActionCard = document.getElementById('policeActionCard');
+    if (policeActionCard) {
+        policeActionCard.addEventListener('click', openPoliceSearch);
     }
 
     // ---------------------------------------------------------------
