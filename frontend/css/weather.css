@@ -368,47 +368,71 @@ body.weather-page-body {
    Hero Today's Weather Card (Dynamic Themes)
    ========================================================================== */
 .hero-weather-card {
+    background: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%);
+    background-color: #1E40AF;
     border-radius: var(--radius-xl);
     padding: 24px 22px;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 16px 36px rgba(37, 99, 235, 0.28);
     display: flex;
     flex-direction: column;
     gap: 18px;
     transition: background 0.5s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Dynamic Themes */
+.hero-weather-card.theme-clear-day,
 .theme-clear-day {
-    background: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%);
-    box-shadow: 0 16px 36px rgba(37, 99, 235, 0.28);
+    background: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%) !important;
+    box-shadow: 0 16px 36px rgba(37, 99, 235, 0.28) !important;
 }
 
+.hero-weather-card.theme-clear-night,
 .theme-clear-night {
-    background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%);
-    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.35);
+    background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%) !important;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.35) !important;
 }
 
+.hero-weather-card.theme-cloudy,
 .theme-cloudy {
-    background: linear-gradient(135deg, #334155 0%, #475569 50%, #64748B 100%);
-    box-shadow: 0 16px 36px rgba(51, 65, 85, 0.28);
+    background: linear-gradient(135deg, #1E293B 0%, #334155 50%, #0284C7 100%) !important;
+    box-shadow: 0 16px 36px rgba(30, 41, 59, 0.28) !important;
 }
 
-.theme-rainy {
-    background: linear-gradient(135deg, #0F3854 0%, #1E40AF 50%, #0369A1 100%);
-    box-shadow: 0 16px 36px rgba(3, 105, 161, 0.3);
+.hero-weather-card.theme-rainy,
+.theme-rainy,
+.hero-weather-card.theme-rain,
+.theme-rain,
+.hero-weather-card.theme-drizzle,
+.theme-drizzle {
+    background: linear-gradient(135deg, #0C4A6E 0%, #0369A1 50%, #0284C7 100%) !important;
+    box-shadow: 0 16px 36px rgba(3, 105, 161, 0.3) !important;
 }
 
-.theme-thunderstorm {
-    background: linear-gradient(135deg, #180B38 0%, #2E1065 50%, #581C87 100%);
-    box-shadow: 0 16px 36px rgba(88, 28, 135, 0.32);
+.hero-weather-card.theme-thunderstorm,
+.theme-thunderstorm,
+.hero-weather-card.theme-storm,
+.theme-storm {
+    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4C1D95 100%) !important;
+    box-shadow: 0 16px 36px rgba(76, 29, 149, 0.32) !important;
 }
 
-.theme-fog {
-    background: linear-gradient(135deg, #374151 0%, #4B5563 50%, #6B7280 100%);
-    box-shadow: 0 16px 36px rgba(75, 85, 99, 0.28);
+.hero-weather-card.theme-fog,
+.theme-fog,
+.hero-weather-card.theme-mist,
+.theme-mist {
+    background: linear-gradient(135deg, #1E293B 0%, #334155 50%, #0369A1 100%) !important;
+    box-shadow: 0 16px 36px rgba(30, 41, 59, 0.28) !important;
+}
+
+.hero-weather-card.theme-snow,
+.theme-snow {
+    background: linear-gradient(135deg, #0369A1 0%, #0284C7 50%, #38BDF8 100%) !important;
+    box-shadow: 0 16px 36px rgba(2, 132, 199, 0.3) !important;
 }
 
 .hero-card-glow {

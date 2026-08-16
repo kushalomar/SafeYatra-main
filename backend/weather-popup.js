@@ -387,9 +387,12 @@
         const c = Number(code);
         if (c === 0) {
             return {
-                label: "Clear Sky",
+                label: isDay ? "Sunny & Clear" : "Clear Night Sky",
                 icon: isDay ? "fa-sun" : "fa-moon",
                 theme: isDay ? "theme-clear-day" : "theme-clear-night",
+                gradient: isDay 
+                    ? "linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%)" 
+                    : "linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%)",
                 safety: "Safe for Travel",
                 safetyClass: "tag-green",
                 advisory: "Ideal sunny weather for sightseeing, heritage walks, and outdoor photography."
@@ -399,6 +402,9 @@
                 label: "Mainly Clear",
                 icon: isDay ? "fa-sun" : "fa-cloud-moon",
                 theme: isDay ? "theme-clear-day" : "theme-clear-night",
+                gradient: isDay 
+                    ? "linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%)" 
+                    : "linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%)",
                 safety: "Safe for Travel",
                 safetyClass: "tag-green",
                 advisory: "Great travel conditions with pleasant light clouds and clear visibility."
@@ -408,6 +414,7 @@
                 label: c === 2 ? "Partly Cloudy" : "Overcast Clouds",
                 icon: isDay ? "fa-cloud-sun" : "fa-cloud-moon",
                 theme: "theme-cloudy",
+                gradient: "linear-gradient(135deg, #1E293B 0%, #334155 50%, #0284C7 100%)",
                 safety: "Safe for Travel",
                 safetyClass: "tag-green",
                 advisory: "Pleasant diffused daylight. Excellent for exploring outdoor monuments comfortably."
@@ -417,6 +424,7 @@
                 label: c === 45 ? "Foggy" : "Depositing Rime Fog",
                 icon: "fa-smog",
                 theme: "theme-fog",
+                gradient: "linear-gradient(135deg, #1E293B 0%, #334155 50%, #0369A1 100%)",
                 safety: "Moderate Caution",
                 safetyClass: "tag-amber",
                 advisory: "Reduced visibility on roads. Drive with fog lights and keep emergency indicators handy."
@@ -426,6 +434,7 @@
                 label: "Light Drizzle",
                 icon: "fa-cloud-rain",
                 theme: "theme-rainy",
+                gradient: "linear-gradient(135deg, #0C4A6E 0%, #0369A1 50%, #0284C7 100%)",
                 safety: "Slight Caution",
                 safetyClass: "tag-amber",
                 advisory: "Intermittent light drizzle. Carry a compact umbrella and wear water-resistant shoes."
@@ -435,6 +444,7 @@
                 label: c === 61 ? "Light Rain" : (c === 63 ? "Moderate Rain" : "Heavy Rain"),
                 icon: "fa-cloud-showers-heavy",
                 theme: "theme-rainy",
+                gradient: "linear-gradient(135deg, #0C4A6E 0%, #0284C7 50%, #0369A1 100%)",
                 safety: c >= 63 ? "Caution: Slippery" : "Slight Caution",
                 safetyClass: c >= 63 ? "tag-red" : "tag-amber",
                 advisory: "Rainy conditions. Pathways and monuments may be slippery. Plan indoor museum visits."
@@ -444,6 +454,7 @@
                 label: "Snowfall",
                 icon: "fa-snowflake",
                 theme: "theme-snow",
+                gradient: "linear-gradient(135deg, #0369A1 0%, #0284C7 50%, #38BDF8 100%)",
                 safety: "Snow Caution",
                 safetyClass: "tag-amber",
                 advisory: "Sub-zero temperatures and snow. Wear thermal layers, snow boots, and gloves."
@@ -453,6 +464,7 @@
                 label: "Rain Showers",
                 icon: "fa-cloud-showers-water",
                 theme: "theme-rainy",
+                gradient: "linear-gradient(135deg, #0C4A6E 0%, #0369A1 50%, #0284C7 100%)",
                 safety: "Moderate Caution",
                 safetyClass: "tag-amber",
                 advisory: "Sudden rain showers expected. Keep electronic devices in waterproof pouches."
@@ -461,7 +473,8 @@
             return {
                 label: "Thunderstorm",
                 icon: "fa-bolt",
-                theme: "theme-storm",
+                theme: "theme-thunderstorm",
+                gradient: "linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4C1D95 100%)",
                 safety: "Severe Weather Alert",
                 safetyClass: "tag-red",
                 advisory: "Thunderstorm alert. Seek shelter in solid buildings and avoid open grounds or trees."
@@ -472,6 +485,7 @@
             label: "Clear",
             icon: isDay ? "fa-sun" : "fa-moon",
             theme: "theme-clear-day",
+            gradient: "linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%)",
             safety: "Safe for Travel",
             safetyClass: "tag-green",
             advisory: "Normal weather conditions for comfortable travel."
@@ -496,12 +510,16 @@
         if (popupHeroTempUnit) popupHeroTempUnit.textContent = `°${currentUnit.toUpperCase()}`;
         if (popupHeroConditionText) popupHeroConditionText.textContent = wmo.label;
 
-        if (popupHeroWeatherCard) {
-            popupHeroWeatherCard.className = `hero-weather-card ${wmo.theme}`;
+        const heroCardEl = document.getElementById('popupHeroWeatherCard') || popupHeroWeatherCard;
+        if (heroCardEl) {
+            heroCardEl.className = `hero-weather-card ${wmo.theme}`;
+            heroCardEl.style.setProperty('background', wmo.gradient, 'important');
+            heroCardEl.style.setProperty('color', '#FFFFFF', 'important');
         }
 
-        if (popupHeroWeatherIcon) {
-            popupHeroWeatherIcon.className = `fa-solid ${wmo.icon} weather-hero-icon`;
+        const heroIconEl = document.getElementById('popupHeroWeatherIcon') || popupHeroWeatherIcon;
+        if (heroIconEl) {
+            heroIconEl.className = `fa-solid ${wmo.icon} weather-hero-icon`;
         }
 
         if (popupHeroSafetyBadge && popupHeroSafetyBadgeText) {

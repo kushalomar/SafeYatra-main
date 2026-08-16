@@ -217,6 +217,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 1. Hero Card Rendering
         if (heroWeatherCard) {
             heroWeatherCard.className = `hero-weather-card ${parsed.themeClass}`;
+            heroWeatherCard.style.setProperty('background', parsed.gradient, 'important');
+            heroWeatherCard.style.setProperty('color', '#FFFFFF', 'important');
         }
         if (heroTempValue) heroTempValue.textContent = toDisplayTemp(tempC);
         if (heroTempUnit) heroTempUnit.textContent = currentUnit === 'f' ? "°F" : "°C";
@@ -295,6 +297,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         let label = "Clear Sky";
         let icon = isDay ? "fa-sun" : "fa-moon";
         let themeClass = isDay ? "theme-clear-day" : "theme-clear-night";
+        let gradient = isDay 
+            ? "linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%)" 
+            : "linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%)";
         let safetyStatusText = "Safe for Travel";
         let isWarning = false;
 
@@ -302,6 +307,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             label = isDay ? "Sunny & Clear" : "Clear Night Sky";
             icon = isDay ? "fa-sun" : "fa-moon";
             themeClass = isDay ? "theme-clear-day" : "theme-clear-night";
+            gradient = isDay 
+                ? "linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #0284C7 100%)" 
+                : "linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%)";
             if (temp > 38) {
                 safetyStatusText = "Extreme Heat Advisory";
                 isWarning = true;
@@ -312,45 +320,52 @@ document.addEventListener('DOMContentLoaded', async () => {
             label = code === 1 ? "Mainly Clear" : (code === 2 ? "Partly Cloudy" : "Overcast");
             icon = isDay ? (code === 3 ? "fa-cloud" : "fa-cloud-sun") : (code === 3 ? "fa-cloud" : "fa-cloud-moon");
             themeClass = "theme-cloudy";
+            gradient = "linear-gradient(135deg, #1E293B 0%, #334155 50%, #0284C7 100%)";
             safetyStatusText = "Pleasant for Sightseeing";
         } else if (code === 45 || code === 48) {
             label = "Misty / Foggy";
             icon = "fa-smog";
             themeClass = "theme-fog";
+            gradient = "linear-gradient(135deg, #1E293B 0%, #334155 50%, #0369A1 100%)";
             safetyStatusText = "Low Visibility Warning";
             isWarning = true;
         } else if (code >= 51 && code <= 57) {
             label = "Light Drizzle";
             icon = "fa-cloud-rain";
             themeClass = "theme-rainy";
+            gradient = "linear-gradient(135deg, #0C4A6E 0%, #0369A1 50%, #0284C7 100%)";
             safetyStatusText = "Carry Light Umbrella";
         } else if (code >= 61 && code <= 67) {
             label = "Moderate Rain";
             icon = "fa-cloud-showers-heavy";
             themeClass = "theme-rainy";
+            gradient = "linear-gradient(135deg, #0C4A6E 0%, #0284C7 50%, #0369A1 100%)";
             safetyStatusText = "Wet Roads Warning";
             isWarning = true;
         } else if (code >= 71 && code <= 77) {
             label = "Snowfall";
             icon = "fa-snowflake";
-            themeClass = "theme-cloudy";
+            themeClass = "theme-snow";
+            gradient = "linear-gradient(135deg, #0369A1 0%, #0284C7 50%, #38BDF8 100%)";
             safetyStatusText = "Cold Weather Alert";
             isWarning = true;
         } else if (code >= 80 && code <= 82) {
             label = "Rain Showers";
             icon = "fa-cloud-showers-water";
             themeClass = "theme-rainy";
+            gradient = "linear-gradient(135deg, #0C4A6E 0%, #0369A1 50%, #0284C7 100%)";
             safetyStatusText = "Intermittent Showers";
             isWarning = true;
         } else if (code >= 95) {
             label = "Thunderstorm Alert";
             icon = "fa-bolt-lightning";
             themeClass = "theme-thunderstorm";
+            gradient = "linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4C1D95 100%)";
             safetyStatusText = "Severe Storm Warning";
             isWarning = true;
         }
 
-        return { label, icon, themeClass, safetyStatusText, isWarning };
+        return { label, icon, themeClass, gradient, safetyStatusText, isWarning };
     }
 
     // Dynamic AI Advisory Generator
