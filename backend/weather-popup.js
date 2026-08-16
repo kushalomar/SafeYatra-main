@@ -1,4 +1,4 @@
-/* SafeYatra AI - Dedicated Live Weather Popup Controller & Engine */
+/* SafeYatra - Dedicated Live Weather Popup Controller & Engine */
 
 (() => {
     let currentLat = 27.1751;
@@ -194,7 +194,7 @@
             popupRefreshWeatherBtn.addEventListener('click', async () => {
                 if (popupRefreshIcon) popupRefreshIcon.classList.add('fa-spin');
                 if (popupSyncStatusText) popupSyncStatusText.textContent = "Refreshing Data...";
-                await fetchWeatherData(currentLat, currentLng);
+                await initWeatherView(currentLat, currentLng, isCurrentLocation);
                 setTimeout(() => {
                     if (popupRefreshIcon) popupRefreshIcon.classList.remove('fa-spin');
                     if (popupSyncStatusText) popupSyncStatusText.textContent = isCurrentLocation ? "Live GPS Sync" : "Destination Synced";
@@ -213,6 +213,9 @@
         const chips = document.querySelectorAll('.dest-chip');
         chips.forEach(chip => {
             chip.addEventListener('click', () => {
+                chips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+
                 const city = chip.dataset.city;
                 const lat = parseFloat(chip.dataset.lat);
                 const lng = parseFloat(chip.dataset.lng);
@@ -262,6 +265,9 @@
                 initWeatherView(lat, lng, false);
                 return;
             }
+            // Use passed coordinates and resolve location name
+            initWeatherView(lat, lng, true);
+            return;
         }
 
         if (!isInitialized) {
@@ -302,7 +308,7 @@
                     if (popupSyncStatusText) popupSyncStatusText.textContent = "Default Location";
                     initWeatherView(currentLat, currentLng, true);
                 },
-                { enableHighAccuracy: false, timeout: 20000 }
+                { enableHighAccuracy: false, timeout: 15000 }
             );
         } else {
             if (popupSyncStatusText) popupSyncStatusText.textContent = "GPS Unavailable";
@@ -310,10 +316,11 @@
         }
     }
 
-    // Initialize View with reverse geocoding and weather fetch
+    // Initialize View with reverse geocoding and weather fetch in parallel
     async function initWeatherView(lat, lng, shouldGeocode = true) {
+        const promises = [fetchWeatherData(lat, lng)];
         if (shouldGeocode) {
-            await fetchReverseGeocode(lat, lng);
+            promises.push(fetchReverseGeocode(lat, lng));
         } else {
             if (popupHeroCityName) popupHeroCityName.textContent = currentCityName;
             if (popupTipsCitySpan) popupTipsCitySpan.textContent = currentCityName;
@@ -321,7 +328,7 @@
                 popupHeroLocationTag.textContent = isCurrentLocation ? "Current Location" : "Destination";
             }
         }
-        await fetchWeatherData(lat, lng);
+        await Promise.all(promises);
     }
 
     // Reverse Geocode
@@ -390,7 +397,7 @@
         } else if (c === 1) {
             return {
                 label: "Mainly Clear",
-                icon: isDay ? "fa-sun-cloud" : "fa-cloud-moon",
+                icon: isDay ? "fa-sun" : "fa-cloud-moon",
                 theme: isDay ? "theme-clear-day" : "theme-clear-night",
                 safety: "Safe for Travel",
                 safetyClass: "tag-green",
@@ -418,7 +425,7 @@
             return {
                 label: "Light Drizzle",
                 icon: "fa-cloud-rain",
-                theme: "theme-rain",
+                theme: "theme-rainy",
                 safety: "Slight Caution",
                 safetyClass: "tag-amber",
                 advisory: "Intermittent light drizzle. Carry a compact umbrella and wear water-resistant shoes."
@@ -427,10 +434,10 @@
             return {
                 label: c === 61 ? "Light Rain" : (c === 63 ? "Moderate Rain" : "Heavy Rain"),
                 icon: "fa-cloud-showers-heavy",
-                theme: "theme-rain",
+                theme: "theme-rainy",
                 safety: c >= 63 ? "Caution: Slippery" : "Slight Caution",
                 safetyClass: c >= 63 ? "tag-red" : "tag-amber",
-                advisory: "Rainy conditions. Pathways and ghats may be slippery. Plan indoor visits or museum tours."
+                advisory: "Rainy conditions. Pathways and monuments may be slippery. Plan indoor museum visits."
             };
         } else if (c >= 71 && c <= 77) {
             return {
@@ -445,10 +452,10 @@
             return {
                 label: "Rain Showers",
                 icon: "fa-cloud-showers-water",
-                theme: "theme-rain",
+                theme: "theme-rainy",
                 safety: "Moderate Caution",
                 safetyClass: "tag-amber",
-                advisory: "Sudden rain showers expected. Keep electronic devices in waterproof bags."
+                advisory: "Sudden rain showers expected. Keep electronic devices in waterproof pouches."
             };
         } else if (c >= 95) {
             return {
@@ -457,7 +464,7 @@
                 theme: "theme-storm",
                 safety: "Severe Weather Alert",
                 safetyClass: "tag-red",
-                advisory: "Thunderstorm alert. Seek shelter in solid buildings and avoid open fields or trees."
+                advisory: "Thunderstorm alert. Seek shelter in solid buildings and avoid open grounds or trees."
             };
         }
 
@@ -503,8 +510,8 @@
         }
 
         // Daily High / Low & Feels Like
-        const todayHighC = daily.temperature_2m_max ? daily.temperature_2m_max[0] : tempC + 3;
-        const todayLowC = daily.temperature_2m_min ? daily.temperature_2m_min[0] : tempC - 4;
+        const todayHighC = (daily.temperature_2m_max && daily.temperature_2m_max[0] !== undefined) ? daily.temperature_2m_max[0] : tempC + 3;
+        const todayLowC = (daily.temperature_2m_min && daily.temperature_2m_min[0] !== undefined) ? daily.temperature_2m_min[0] : tempC - 4;
         const feelsLikeC = (hourly.apparent_temperature && hourly.apparent_temperature[0] !== undefined)
             ? hourly.apparent_temperature[0]
             : tempC;
@@ -540,7 +547,7 @@
         }
 
         // UV Index
-        const maxUv = daily.uv_index_max ? daily.uv_index_max[0] : (hourly.uv_index ? hourly.uv_index[12] : 4);
+        const maxUv = (daily.uv_index_max && daily.uv_index_max[0] !== undefined) ? daily.uv_index_max[0] : ((hourly.uv_index && hourly.uv_index[12] !== undefined) ? hourly.uv_index[12] : 4);
         const uvNum = Math.round(maxUv || 4);
         if (popupMetricUvVal) popupMetricUvVal.textContent = uvNum;
         if (popupMetricUvBar) popupMetricUvBar.style.width = `${Math.min((uvNum / 12) * 100, 100)}%`;
@@ -561,7 +568,7 @@
         if (popupMetricUvDesc) popupMetricUvDesc.textContent = uvDescText;
 
         // Wind
-        const windSpeed = Math.round(current.windspeed || (daily.windspeed_10m_max ? daily.windspeed_10m_max[0] : 12));
+        const windSpeed = Math.round(current.windspeed || ((daily.windspeed_10m_max && daily.windspeed_10m_max[0] !== undefined) ? daily.windspeed_10m_max[0] : 12));
         const windDeg = current.winddirection || 45;
         const windDirCompass = getCompassDirection(windDeg);
         if (popupMetricWindVal) popupMetricWindVal.textContent = `${windSpeed} km/h`;
@@ -573,8 +580,9 @@
         }
 
         // Humidity
-        const humidity = hourly.relativehumidity_2m ? hourly.relativehumidity_2m[now.getHours()] : 55;
-        if (popupMetricHumidityVal) popupMetricHumidityVal.textContent = `${humidity || 55}%`;
+        const currentHourIndex = now.getHours();
+        const humidity = (hourly.relativehumidity_2m && hourly.relativehumidity_2m[currentHourIndex] !== undefined) ? hourly.relativehumidity_2m[currentHourIndex] : 55;
+        if (popupMetricHumidityVal) popupMetricHumidityVal.textContent = `${humidity}%`;
         if (popupMetricHumidityTag) {
             if (humidity > 70) popupMetricHumidityTag.textContent = "Humid";
             else if (humidity < 30) popupMetricHumidityTag.textContent = "Dry";
@@ -585,8 +593,8 @@
         }
 
         // Rain Probability & Precipitation
-        const precipProb = daily.precipitation_probability_max ? daily.precipitation_probability_max[0] : (hourly.precipitation_probability ? hourly.precipitation_probability[0] : 0);
-        const precipSum = daily.precipitation_sum ? daily.precipitation_sum[0] : 0;
+        const precipProb = (daily.precipitation_probability_max && daily.precipitation_probability_max[0] !== undefined) ? daily.precipitation_probability_max[0] : ((hourly.precipitation_probability && hourly.precipitation_probability[0] !== undefined) ? hourly.precipitation_probability[0] : 0);
+        const precipSum = (daily.precipitation_sum && daily.precipitation_sum[0] !== undefined) ? daily.precipitation_sum[0] : 0;
         if (popupMetricPrecipProbTag) popupMetricPrecipProbTag.textContent = `${precipProb}%`;
         if (popupMetricPrecipVal) popupMetricPrecipVal.textContent = `${precipSum} mm`;
         if (popupMetricPrecipDesc) {
@@ -594,7 +602,7 @@
         }
 
         // Visibility
-        const visMeters = hourly.visibility ? hourly.visibility[now.getHours()] : 10000;
+        const visMeters = (hourly.visibility && hourly.visibility[currentHourIndex] !== undefined) ? hourly.visibility[currentHourIndex] : 10000;
         const visKm = Math.round((visMeters || 10000) / 1000);
         if (popupMetricVisibilityVal) popupMetricVisibilityVal.textContent = `${visKm} km`;
         if (popupMetricVisibilityTag) {
@@ -618,8 +626,8 @@
         }
 
         // Cloud Cover & Pressure
-        const cloudCoverVal = hourly.cloudcover ? hourly.cloudcover[now.getHours()] : 20;
-        const pressureVal = hourly.surface_pressure ? Math.round(hourly.surface_pressure[now.getHours()]) : 1012;
+        const cloudCoverVal = (hourly.cloudcover && hourly.cloudcover[currentHourIndex] !== undefined) ? hourly.cloudcover[currentHourIndex] : 20;
+        const pressureVal = (hourly.surface_pressure && hourly.surface_pressure[currentHourIndex] !== undefined) ? Math.round(hourly.surface_pressure[currentHourIndex]) : 1012;
         if (popupMetricCloudCover) popupMetricCloudCover.textContent = `${cloudCoverVal}%`;
         if (popupMetricPressureDesc) popupMetricPressureDesc.textContent = `Pressure: ${pressureVal} hPa`;
 
@@ -753,7 +761,7 @@
         }
 
         if (popupTipGearText) {
-            if (wmo.theme === 'theme-rain' || wmo.theme === 'theme-storm') {
+            if (wmo.theme === 'theme-rainy' || wmo.theme === 'theme-storm') {
                 popupTipGearText.textContent = "Compact umbrella, waterproof phone pouch, raincoat";
             } else if (uvNum >= 6) {
                 popupTipGearText.textContent = "Broad UV sunglasses, SPF 50+ sunscreen & sun-cap";
@@ -763,7 +771,7 @@
         }
 
         if (popupTipPhotoText) {
-            if (wmo.theme === 'theme-rain') {
+            if (wmo.theme === 'theme-rainy') {
                 popupTipPhotoText.textContent = "Dramatic monsoon reflections around historical plazas";
             } else {
                 popupTipPhotoText.textContent = "Golden hour 5:30 PM – 6:30 PM for sunset monument shots";
