@@ -259,11 +259,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         lastUpdatedFooter.textContent = `Last updated: ${timeStr} · AI model v3.2`;
     }
 
-    // Click handler for weather pill card -> Google Maps Weather
+    // Click handler for weather pill card -> Dedicated SafeYatra Live Weather UI
     if (statusWeatherItem) {
         statusWeatherItem.addEventListener('click', () => {
-            const mapsUrl = `https://www.google.com/maps/search/Weather/@${currentLat},${currentLng},13z`;
-            window.open(mapsUrl, '_blank');
+            window.location.href = `weather.html?lat=${currentLat}&lng=${currentLng}`;
         });
     }
 
