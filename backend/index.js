@@ -97,6 +97,167 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // Curated Famous Landmark / Tourist Area Images Map
+    const FAMOUS_LANDMARK_IMAGES = {
+        "delhi": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "new delhi": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "noida": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "gurgaon": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "gurugram": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "ghaziabad": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "faridabad": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "agra": "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80",
+        "jaipur": "https://images.unsplash.com/photo-1603262110263-fb010d6e75dc?auto=format&fit=crop&w=1200&q=80",
+        "udaipur": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=1200&q=80",
+        "jodhpur": "https://images.unsplash.com/photo-1588714477688-cf28a50e94f7?auto=format&fit=crop&w=1200&q=80",
+        "jaisalmer": "https://images.unsplash.com/photo-1576487248805-cf45f6bcc67f?auto=format&fit=crop&w=1200&q=80",
+        "varanasi": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80",
+        "banaras": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80",
+        "kashi": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80",
+        "lucknow": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
+        "kanpur": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
+        "prayagraj": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80",
+        "allahabad": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80",
+        "ayodhya": "https://images.unsplash.com/photo-1609946850020-001004a434c4?auto=format&fit=crop&w=1200&q=80",
+        "amritsar": "https://images.unsplash.com/photo-1609946850020-001004a434c4?auto=format&fit=crop&w=1200&q=80",
+        "chandigarh": "https://images.unsplash.com/photo-1588095254134-2e67a07fc261?auto=format&fit=crop&w=1200&q=80",
+        "shimla": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80",
+        "manali": "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80",
+        "dharamshala": "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=1200&q=80",
+        "rishikesh": "https://images.unsplash.com/photo-1600100397608-f010f444f434?auto=format&fit=crop&w=1200&q=80",
+        "haridwar": "https://images.unsplash.com/photo-1600100397608-f010f444f434?auto=format&fit=crop&w=1200&q=80",
+        "dehradun": "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=1200&q=80",
+        "mussoorie": "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=1200&q=80",
+        "nainital": "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=1200&q=80",
+        "srinagar": "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80",
+        "jammu": "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80",
+        "leh": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80",
+        "ladakh": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80",
+        "mumbai": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80",
+        "navi mumbai": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80",
+        "thane": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80",
+        "pune": "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=80",
+        "ahmedabad": "https://images.unsplash.com/photo-1597040663342-45b6af3d91a8?auto=format&fit=crop&w=1200&q=80",
+        "surat": "https://images.unsplash.com/photo-1597040663342-45b6af3d91a8?auto=format&fit=crop&w=1200&q=80",
+        "vadodara": "https://images.unsplash.com/photo-1597040663342-45b6af3d91a8?auto=format&fit=crop&w=1200&q=80",
+        "goa": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80",
+        "panaji": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80",
+        "bengaluru": "https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1200&q=80",
+        "bangalore": "https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1200&q=80",
+        "mysuru": "https://images.unsplash.com/photo-1600100397608-f010f444f434?auto=format&fit=crop&w=1200&q=80",
+        "mysore": "https://images.unsplash.com/photo-1600100397608-f010f444f434?auto=format&fit=crop&w=1200&q=80",
+        "hyderabad": "https://images.unsplash.com/photo-1605007493699-ce65834f8a00?auto=format&fit=crop&w=1200&q=80",
+        "secunderabad": "https://images.unsplash.com/photo-1605007493699-ce65834f8a00?auto=format&fit=crop&w=1200&q=80",
+        "chennai": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+        "madurai": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+        "kochi": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+        "cochin": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+        "thiruvananthapuram": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+        "munnar": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+        "alleppey": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+        "kolkata": "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1200&q=80",
+        "calcutta": "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1200&q=80",
+        "darjeeling": "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1200&q=80",
+        "bhubaneswar": "https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80",
+        "puri": "https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80",
+        "patna": "https://images.unsplash.com/photo-1622396636133-ba43f812dd3b?auto=format&fit=crop&w=1200&q=80",
+        "bodhgaya": "https://images.unsplash.com/photo-1622396636133-ba43f812dd3b?auto=format&fit=crop&w=1200&q=80",
+        "indore": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
+        "bhopal": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
+        "guwahati": "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1200&q=80",
+        "shillong": "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1200&q=80",
+        "gangtok": "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1200&q=80"
+    };
+
+    const STATE_LANDMARK_IMAGES = {
+        "uttar pradesh": "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80",
+        "delhi": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=80",
+        "rajasthan": "https://images.unsplash.com/photo-1603262110263-fb010d6e75dc?auto=format&fit=crop&w=1200&q=80",
+        "maharashtra": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80",
+        "karnataka": "https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1200&q=80",
+        "tamil nadu": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+        "telangana": "https://images.unsplash.com/photo-1605007493699-ce65834f8a00?auto=format&fit=crop&w=1200&q=80",
+        "kerala": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+        "west bengal": "https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=1200&q=80",
+        "punjab": "https://images.unsplash.com/photo-1609946850020-001004a434c4?auto=format&fit=crop&w=1200&q=80",
+        "himachal pradesh": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80",
+        "uttarakhand": "https://images.unsplash.com/photo-1600100397608-f010f444f434?auto=format&fit=crop&w=1200&q=80",
+        "jammu and kashmir": "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80",
+        "ladakh": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80",
+        "goa": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80",
+        "gujarat": "https://images.unsplash.com/photo-1597040663342-45b6af3d91a8?auto=format&fit=crop&w=1200&q=80",
+        "odisha": "https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80",
+        "madhya pradesh": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
+        "assam": "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1200&q=80",
+        "bihar": "https://images.unsplash.com/photo-1622396636133-ba43f812dd3b?auto=format&fit=crop&w=1200&q=80"
+    };
+
+    /**
+     * Dynamically replace the hero background image (.personal-info) with the famous landmark image
+     * of the area/city in which the user is active.
+     */
+    async function updateDynamicAreaHeroImage(city, state) {
+        const personalInfoCard = document.querySelector('.personal-info');
+        if (!personalInfoCard) return;
+
+        const cleanCity = (city || "").toLowerCase().trim();
+        const cleanState = (state || "").toLowerCase().trim();
+
+        let matchedImage = null;
+
+        // 1. Check direct curated landmark dictionary for city
+        for (const [key, url] of Object.entries(FAMOUS_LANDMARK_IMAGES)) {
+            if (cleanCity === key || cleanCity.includes(key) || key.includes(cleanCity)) {
+                matchedImage = url;
+                break;
+            }
+        }
+
+        // 2. Check curated landmark dictionary for state if city not directly found
+        if (!matchedImage) {
+            for (const [key, url] of Object.entries(STATE_LANDMARK_IMAGES)) {
+                if (cleanState === key || cleanState.includes(key) || key.includes(cleanState)) {
+                    matchedImage = url;
+                    break;
+                }
+            }
+        }
+
+        // 3. Dynamic Wikipedia Landmark API Lookup for any custom/unlisted city or region
+        if (!matchedImage && city) {
+            try {
+                const wikiRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(city)}&prop=pageimages&format=json&pithumbsize=1200&origin=*`);
+                if (wikiRes.ok) {
+                    const wikiData = await wikiRes.json();
+                    const pages = wikiData.query?.pages;
+                    if (pages) {
+                        const pageId = Object.keys(pages)[0];
+                        if (pageId && pages[pageId]?.thumbnail?.source) {
+                            matchedImage = pages[pageId].thumbnail.source;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn("Wikipedia landmark image fetch fallback:", err);
+            }
+        }
+
+        // 4. Default Fallback (Taj Mahal / Agra)
+        if (!matchedImage) {
+            matchedImage = "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80";
+        }
+
+        // 5. Preload the image and apply smoothly
+        const imgPreload = new Image();
+        imgPreload.src = matchedImage;
+        imgPreload.onload = () => {
+            personalInfoCard.style.backgroundImage = `linear-gradient(135deg, rgba(20, 83, 45, 0.85), rgba(15, 23, 42, 0.88)), url('${matchedImage}')`;
+            personalInfoCard.style.backgroundPosition = 'center';
+            personalInfoCard.style.backgroundSize = 'cover';
+            personalInfoCard.style.backgroundRepeat = 'no-repeat';
+        };
+    }
+
     // 2. Fetch City & State via Free Reverse Geocoding API
     async function fetchReverseGeocode(lat, lng) {
         try {
@@ -112,11 +273,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (userGreetingLocation) {
                     userGreetingLocation.textContent = locStr;
                 }
+
+                // Dynamically update first green card background image based on user's active area
+                updateDynamicAreaHeroImage(city, state);
             }
         } catch (e) {
             console.warn("Reverse geocode fallback:", e);
             if (locationCityState) locationCityState.textContent = "Agra, Uttar Pradesh";
             if (userGreetingLocation) userGreetingLocation.textContent = "Agra, Uttar Pradesh";
+            updateDynamicAreaHeroImage("Agra", "Uttar Pradesh");
         }
     }
 

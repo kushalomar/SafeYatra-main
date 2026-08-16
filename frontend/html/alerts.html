@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,11 +19,11 @@
     <link rel="icon" type="image/png" sizes="192x192" href="../../assests/icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="../../assests/icon-512.png">
     <link rel="apple-touch-icon" href="../../assests/apple-touch-icon.png">
-    
+
     <!-- SafeYatra Stylesheets -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/alerts.css">
-    
+
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://kit.fontawesome.com/4636c07b63.js" crossorigin="anonymous"></script>
@@ -36,6 +37,7 @@
         }
     </script>
 </head>
+
 <body>
 
     <!-- Header Section with Sticky Title & Filter Pills -->
@@ -75,7 +77,7 @@
         <!-- Prominent Green Safety Level Card -->
         <section class="safety-level-card" aria-label="Current Safety Status Summary">
             <div class="safety-card-bg-pattern"></div>
-            
+
             <div class="safety-card-header">
                 <div class="safety-card-info">
                     <span class="safety-card-label">CURRENT SAFETY LEVEL</span>
@@ -106,7 +108,8 @@
                     <div class="donut-svg-wrapper">
                         <svg width="82" height="82" viewBox="0 0 82 82">
                             <circle class="donut-bg-ring" cx="41" cy="41" r="36" stroke-width="7" fill="none" />
-                            <circle class="donut-progress-ring" id="donutProgressRing" cx="41" cy="41" r="36" stroke-width="7" fill="none" />
+                            <circle class="donut-progress-ring" id="donutProgressRing" cx="41" cy="41" r="36"
+                                stroke-width="7" fill="none" />
                         </svg>
                         <div class="donut-inner-content">
                             <span class="donut-inner-score" id="safetyScoreNum">88</span>
@@ -149,8 +152,9 @@
             </div>
 
             <div class="modal-body">
-                <p class="modal-description" id="modalDescription">Detailed information about this advisory will appear here.</p>
-                
+                <p class="modal-description" id="modalDescription">Detailed information about this advisory will appear
+                    here.</p>
+
                 <div class="modal-meta-box">
                     <div class="meta-row">
                         <span class="meta-label">Advisory Type:</span>
@@ -183,9 +187,10 @@
 
     <!-- Bottom Navigation Bar -->
     <footer>
-        <nav class="bottom-nav" aria-label="Main Navigation">
+        <nav class="bottom-nav">
+
             <a href="index.html" class="nav-item">
-                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-house "></i>
                 <span>Home</span>
             </a>
 
@@ -199,15 +204,6 @@
                 <span>Alerts</span>
             </a>
 
-            <!-- <a href="trips.html" class="nav-item">
-                <i class="fa-solid fa-suitcase"></i>
-                <span>Trips</span>
-            </a> -->
-
-            <a href="profile.html" class="nav-item">
-                <i class="fa-solid fa-user"></i>
-                <span>Profile</span>
-            </a>
         </nav>
     </footer>
 
@@ -222,4 +218,5 @@
     <script src="../../backend/alerts.js"></script>
 
 </body>
+
 </html>
