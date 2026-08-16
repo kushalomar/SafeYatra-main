@@ -49,13 +49,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (displayUserAge) displayUserAge.textContent = data.age ? `${data.age} Years` : "Not set";
         if (displayUserBlood) displayUserBlood.textContent = data.bloodGroup || "O+";
-        if (displayUserEmergency) displayUserEmergency.textContent = data.emergencyContact || "7376712538";
+        if (displayUserEmergency) displayUserEmergency.textContent = data.emergencyContact || "1234567890";
         if (displayUserAddress) displayUserAddress.textContent = data.address || "Location Not Set";
 
         if (touristIdNameEl) touristIdNameEl.textContent = data.name || "Tourist";
 
         if (emergencyCountText) {
-            emergencyCountText.textContent = `Emergency: ${data.emergencyContact || "7376712538"}`;
+            emergencyCountText.textContent = `Emergency: ${data.emergencyContact || "1234567890"}`;
         }
     }
 
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (inputMobile) inputMobile.value = current.mobile || "";
             if (inputAge) inputAge.value = current.age || "";
             if (inputBloodGroup) inputBloodGroup.value = current.bloodGroup || "O+";
-            if (inputEmergency) inputEmergency.value = current.emergencyContact || "7376712538";
+            if (inputEmergency) inputEmergency.value = current.emergencyContact || "1234567890";
             if (inputEmail) inputEmail.value = current.email || "";
             if (inputAddress) inputAddress.value = current.address || "";
 

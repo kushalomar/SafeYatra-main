@@ -1,6 +1,6 @@
 /**
  * SafeYatra AI - Emergency & SOS Hub Script
- * Primary Emergency Contact: +91 7376712538
+ * Primary Emergency Contact: +91 1234567890 (Default / Dynamic from logged-in user)
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         SafeYatraDB.requireAuth();
     }
 
-    // Primary Emergency Contact Config
-    let EMERGENCY_CONTACT = "7376712538";
+    // Primary Emergency Contact Config (Default 1234567890)
+    let EMERGENCY_CONTACT = "1234567890";
 
     if (typeof SafeYatraDB !== 'undefined') {
         const userProfile = await SafeYatraDB.getUserProfile();
@@ -134,6 +134,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (modalCallBtn) {
             modalCallBtn.href = `tel:${EMERGENCY_CONTACT}`;
+        }
+
+        const modalEmergencyContactText = document.getElementById('modalEmergencyContactText');
+        if (modalEmergencyContactText) {
+            modalEmergencyContactText.textContent = `+91 ${EMERGENCY_CONTACT}`;
+        }
+        const primaryContactNumberText = document.getElementById('primaryContactNumberText');
+        if (primaryContactNumberText) {
+            primaryContactNumberText.textContent = `+91 ${EMERGENCY_CONTACT}`;
         }
     }
 

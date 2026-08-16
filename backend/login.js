@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobile: targetPhoneNumber,
                 age: regAge.value.trim(),
                 bloodGroup: regBloodGroup.value.trim(),
-                emergencyContact: regEmergency.value.trim() || "7376712538",
+                emergencyContact: regEmergency.value.trim() || "1234567890",
                 email: regEmail.value.trim(),
                 address: regAddress.value.trim()
             };

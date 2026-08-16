@@ -43,7 +43,7 @@ const SafeYatraDB = {
             mobile: cleanMobile,
             age: "",
             bloodGroup: "O+",
-            emergencyContact: "7376712538",
+            emergencyContact: "1234567890",
             email: "",
             address: ""
         };

@@ -71,17 +71,17 @@
                 <div class="contact-details">
                     <h4>Emergency Contact</h4>
                     <p>Configured for Instant Live Location SMS</p>
-                    <!-- <div class="contact-number">
+                    <div class="contact-number">
                         <i class="fa-solid fa-phone"></i>
-                        <span>+91 7376712538</span>
-                    </div> -->
+                        <span id="primaryContactNumberText">+91 1234567890</span>
+                    </div>
                 </div>
             </div>
             <div class="contact-actions">
-                <a id="smsPrimaryBtn" href="sms:7376712538" class="contact-btn btn-sms">
+                <a id="smsPrimaryBtn" href="sms:1234567890" class="contact-btn btn-sms">
                     <i class="fa-solid fa-comment-sms"></i> Send Location SMS
                 </a>
-                <a id="callPrimaryBtn" href="tel:7376712538" class="contact-btn btn-call">
+                <a id="callPrimaryBtn" href="tel:1234567890" class="contact-btn btn-call">
                     <i class="fa-solid fa-phone"></i> Call Contact
                 </a>
             </div>
@@ -162,17 +162,17 @@
         <div class="modal-box sos-triggered-box">
             <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
             <h2>SOS ALERT DISPATCHED!</h2>
-            <p>Siren activated & location link prepared for emergency contact <strong>+91 7376712538</strong>.</p>
+            <p>Siren activated & location link prepared for emergency contact <strong id="modalEmergencyContactText">+91 1234567890</strong>.</p>
             
             <div class="auto-countdown-pill">
                 Auto SMS Dispatching in <span id="modalCountdown">10</span>s
             </div>
 
             <div class="modal-actions">
-                <a id="modalSmsBtn" href="sms:7376712538" class="btn-modal-primary">
+                <a id="modalSmsBtn" href="sms:1234567890" class="btn-modal-primary">
                     <i class="fa-solid fa-paper-plane"></i> Send SMS Live Location Now
                 </a>
-                <a id="modalCallBtn" href="tel:7376712538" class="btn-modal-primary" style="background:#22C55E;">
+                <a id="modalCallBtn" href="tel:1234567890" class="btn-modal-primary" style="background:#22C55E;">
                     <i class="fa-solid fa-phone"></i> Call Emergency Contact Now
                 </a>
                 <button id="modalCancelBtn" class="btn-modal-secondary">
