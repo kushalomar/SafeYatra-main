@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SafeYatra AI - Live Weather Forecast, Real-time Climate Metrics & Tourist Safety Advisories">
+    <meta name="description"
+        content="SafeYatra AI - Live Weather Forecast, Real-time Climate Metrics & Tourist Safety Advisories">
     <title>Weather & Travel Climate - SafeYatra AI</title>
 
     <!-- Web App Manifest & PWA Meta for Bubblewrap / PWA Builder / GitHub Pages -->
@@ -77,8 +78,10 @@
         <section class="search-section" aria-label="Search destination weather">
             <form id="weatherSearchForm" class="weather-search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="weatherSearchInput" placeholder="Search tourist city (e.g. Jaipur, Goa, Agra)..." autocomplete="off">
-                <button type="button" id="useCurrentLocationBtn" class="geo-detect-btn" title="Use My Current GPS Location">
+                <input type="text" id="weatherSearchInput" placeholder="Search tourist city (e.g. Jaipur, Goa, Agra)..."
+                    autocomplete="off">
+                <button type="button" id="useCurrentLocationBtn" class="geo-detect-btn"
+                    title="Use My Current GPS Location">
                     <i class="fa-solid fa-location-crosshairs"></i>
                 </button>
                 <button type="submit" class="search-submit-btn">Search</button>
@@ -90,7 +93,8 @@
             <!-- Quick Tourist Destination Chips -->
             <div class="quick-destinations-scroll">
                 <span class="chips-label"><i class="fa-solid fa-fire"></i> Popular:</span>
-                <button class="dest-chip" data-city="Agra" data-lat="27.1751" data-lng="78.0421">Taj Mahal, Agra</button>
+                <button class="dest-chip" data-city="Agra" data-lat="27.1751" data-lng="78.0421">Taj Mahal,
+                    Agra</button>
                 <button class="dest-chip" data-city="Jaipur" data-lat="26.9124" data-lng="75.7873">Jaipur</button>
                 <button class="dest-chip" data-city="New Delhi" data-lat="28.6139" data-lng="77.2090">New Delhi</button>
                 <button class="dest-chip" data-city="Varanasi" data-lat="25.3176" data-lng="82.9739">Varanasi</button>
@@ -197,7 +201,8 @@
                 <div class="metric-card">
                     <div class="metric-card-header">
                         <span class="metric-title"><i class="fa-solid fa-temperature-half"></i> Feels Like</span>
-                        <i class="fa-solid fa-circle-info metric-info-icon" title="Perceived temperature based on humidity & wind"></i>
+                        <i class="fa-solid fa-circle-info metric-info-icon"
+                            title="Perceived temperature based on humidity & wind"></i>
                     </div>
                     <div class="metric-card-body">
                         <div class="metric-primary-val" id="metricFeelsLike">--°</div>
@@ -385,9 +390,10 @@
 
     <!-- Bottom Navigation Bar (Standard SafeYatra Nav) -->
     <footer>
-        <nav class="bottom-nav" aria-label="Main Navigation">
+        <nav class="bottom-nav">
+
             <a href="index.html" class="nav-item">
-                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-house "></i>
                 <span>Home</span>
             </a>
 
@@ -401,10 +407,6 @@
                 <span>Alerts</span>
             </a>
 
-            <a href="profile.html" class="nav-item">
-                <i class="fa-solid fa-user"></i>
-                <span>Profile</span>
-            </a>
         </nav>
     </footer>
 

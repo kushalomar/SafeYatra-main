@@ -424,10 +424,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         lastUpdatedFooter.textContent = `Last updated: ${timeStr} · AI model v3.2`;
     }
 
-    // Click handler for weather pill card -> Dedicated SafeYatra Live Weather UI
+    // Click handler for weather pill card -> Open Live Weather Popup Modal
     if (statusWeatherItem) {
-        statusWeatherItem.addEventListener('click', () => {
-            window.location.href = `weather.html?lat=${currentLat}&lng=${currentLng}`;
+        statusWeatherItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (typeof window.openWeatherPopup === 'function') {
+                window.openWeatherPopup(currentLat, currentLng);
+            }
         });
     }
 

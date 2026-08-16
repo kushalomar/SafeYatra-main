@@ -21,6 +21,7 @@
 
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/weather.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://kit.fontawesome.com/4636c07b63.js"></script>
 
@@ -574,6 +575,364 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast-msg">Profile Saved!</div>
 
+    <!-- ==========================================================================
+         WEATHER POPUP MODAL / BOTTOM SHEET (FOR LIVE WEATHER & CLIMATE)
+         ========================================================================== -->
+    <div id="weatherPopupOverlay" class="weather-popup-overlay" aria-hidden="true">
+        <div class="weather-popup-sheet" role="dialog" aria-modal="true" aria-labelledby="weatherPopupTitle">
+            
+            <!-- Popup Header Bar -->
+            <div class="weather-popup-header">
+                <div class="weather-popup-handle"></div>
+                <div class="weather-popup-header-content">
+                    <div class="weather-popup-title-wrap">
+                        <div class="weather-popup-badge-icon">
+                            <i class="fa-solid fa-cloud-sun"></i>
+                        </div>
+                        <div>
+                            <h3 id="weatherPopupTitle" class="weather-popup-title">Live Weather</h3>
+                            <div class="weather-popup-subtitle">
+                                <span class="pulse-dot"></span>
+                                <span id="popupSyncStatusText">Live GPS Sync</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weather-popup-actions">
+                        <!-- Unit Switcher Toggle (°C / °F) -->
+                        <div class="unit-toggle" id="popupUnitToggleContainer" title="Switch temperature unit">
+                            <button class="unit-btn active" id="popupBtnCelsius" data-unit="c">°C</button>
+                            <button class="unit-btn" id="popupBtnFahrenheit" data-unit="f">°F</button>
+                        </div>
+
+                        <!-- Refresh Button -->
+                        <button class="weather-popup-close" id="popupRefreshWeatherBtn" title="Refresh Live Data" aria-label="Refresh Data">
+                            <i class="fa-solid fa-rotate-right" id="popupRefreshIcon"></i>
+                        </button>
+
+                        <!-- Close Button -->
+                        <button id="closeWeatherPopupBtn" class="weather-popup-close" title="Close Weather" aria-label="Close Weather">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popup Scrollable Content -->
+            <div class="weather-popup-scroll">
+                
+                <!-- Search & Destination Quick-Select Bar -->
+                <section class="search-section" aria-label="Search destination weather">
+                    <form id="popupWeatherSearchForm" class="weather-search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="popupWeatherSearchInput" placeholder="Search city (e.g. Jaipur, Goa, Agra)..." autocomplete="off">
+                        <button type="button" id="popupUseCurrentLocationBtn" class="geo-detect-btn" title="Use My Current GPS Location">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </button>
+                        <button type="submit" class="search-submit-btn">Search</button>
+                    </form>
+
+                    <!-- Search Suggestion Results Dropdown -->
+                    <div id="popupSearchResultsList" class="search-results-dropdown" style="display: none;"></div>
+
+                    <!-- Quick Tourist Destination Chips -->
+                    <div class="quick-destinations-scroll">
+                        <span class="chips-label"><i class="fa-solid fa-fire"></i> Popular:</span>
+                        <button class="dest-chip" data-city="Agra" data-lat="27.1751" data-lng="78.0421">Taj Mahal, Agra</button>
+                        <button class="dest-chip" data-city="Jaipur" data-lat="26.9124" data-lng="75.7873">Jaipur</button>
+                        <button class="dest-chip" data-city="New Delhi" data-lat="28.6139" data-lng="77.2090">New Delhi</button>
+                        <button class="dest-chip" data-city="Varanasi" data-lat="25.3176" data-lng="82.9739">Varanasi</button>
+                        <button class="dest-chip" data-city="Goa" data-lat="15.2993" data-lng="74.1240">Goa</button>
+                        <button class="dest-chip" data-city="Shimla" data-lat="31.1048" data-lng="77.1734">Shimla</button>
+                        <button class="dest-chip" data-city="Manali" data-lat="32.2432" data-lng="77.1892">Manali</button>
+                        <button class="dest-chip" data-city="Mumbai" data-lat="19.0760" data-lng="72.8777">Mumbai</button>
+                    </div>
+                </section>
+
+                <!-- Dynamic Hero Weather Card (Current Day) -->
+                <section class="hero-weather-card theme-clear-day" id="popupHeroWeatherCard" aria-label="Today's Current Weather">
+                    <div class="hero-card-glow"></div>
+                    <div class="hero-card-bg-pattern"></div>
+
+                    <div class="hero-header-row">
+                        <div class="hero-location-info">
+                            <div class="location-badge">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span id="popupHeroLocationTag">Current Location</span>
+                            </div>
+                            <h2 class="hero-city-name" id="popupHeroCityName">Agra, Uttar Pradesh</h2>
+                            <p class="hero-date-time" id="popupHeroDateTime">Loading live weather data...</p>
+                        </div>
+
+                        <div class="hero-safety-badge" id="popupHeroSafetyBadge">
+                            <i class="fa-solid fa-shield-check"></i>
+                            <span id="popupHeroSafetyBadgeText">Safe for Travel</span>
+                        </div>
+                    </div>
+
+                    <!-- Temperature & Condition Hero Display -->
+                    <div class="hero-main-row">
+                        <div class="hero-temp-block">
+                            <div class="temp-number-wrap">
+                                <span class="hero-temp-value" id="popupHeroTempValue">--</span>
+                                <span class="hero-temp-unit" id="popupHeroTempUnit">°C</span>
+                            </div>
+                            <div class="hero-condition-text" id="popupHeroConditionText">Fetching conditions...</div>
+                            <div class="hero-high-low-row">
+                                <span><i class="fa-solid fa-arrow-up"></i> H: <strong id="popupHeroHighTemp">--°</strong></span>
+                                <span class="divider">•</span>
+                                <span><i class="fa-solid fa-arrow-down"></i> L: <strong id="popupHeroLowTemp">--°</strong></span>
+                                <span class="divider">•</span>
+                                <span>Feels like <strong id="popupHeroFeelsLike">--°</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="hero-icon-block">
+                            <div class="weather-icon-animated" id="popupHeroWeatherIconWrapper">
+                                <i class="fa-solid fa-sun weather-hero-icon" id="popupHeroWeatherIcon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Travel Advisory & Weather Tip Banner -->
+                    <div class="ai-travel-advisory-box" id="popupAiWeatherAdvisoryBox">
+                        <div class="advisory-icon-circle">
+                            <i class="fa-solid fa-robot" id="popupAdvisoryIcon"></i>
+                        </div>
+                        <div class="advisory-content">
+                            <div class="advisory-title-row">
+                                <span class="advisory-tag">AI TRAVEL ADVISORY</span>
+                                <span class="advisory-time" id="popupAdvisoryTimeTag">Updated just now</span>
+                            </div>
+                            <p class="advisory-message" id="popupAdvisoryMessageText">
+                                Analyzing climate factors for safe sightseeing and outdoor travel...
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Hourly Forecast (Next 24 Hours) -->
+                <section class="hourly-forecast-section" aria-label="Hourly Forecast">
+                    <div class="section-header-flex">
+                        <div class="section-title-wrap">
+                            <i class="fa-solid fa-clock"></i>
+                            <h3 class="section-heading">Hourly Forecast</h3>
+                        </div>
+                        <span class="section-subtext">Next 24 Hours</span>
+                    </div>
+
+                    <div class="hourly-carousel-track" id="popupHourlyForecastTrack">
+                        <!-- Dynamically populated hourly cards -->
+                        <div class="hourly-loading-placeholder">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
+                            <span>Loading 24-hour forecast...</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detailed Climate & Tourist Metrics Grid -->
+                <section class="metrics-grid-section" aria-label="Today's Weather Metrics">
+                    <div class="section-header-flex">
+                        <div class="section-title-wrap">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            <h3 class="section-heading">Today's Climate Highlights</h3>
+                        </div>
+                        <span class="section-subtext">Real-time Sensors</span>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <!-- 1. Feels Like -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-temperature-half"></i> Feels Like</span>
+                                <i class="fa-solid fa-circle-info metric-info-icon" title="Perceived temperature based on humidity & wind"></i>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val" id="popupMetricFeelsLike">--°</div>
+                                <p class="metric-desc" id="popupMetricFeelsDesc">Similar to actual temperature</p>
+                            </div>
+                        </div>
+
+                        <!-- 2. UV Index & Sun Protection -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-sun"></i> UV Index</span>
+                                <span class="uv-level-badge" id="popupMetricUvBadge">Moderate</span>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val" id="popupMetricUvVal">--</div>
+                                <div class="uv-bar-container">
+                                    <div class="uv-bar-fill" id="popupMetricUvBar" style="width: 50%;"></div>
+                                </div>
+                                <p class="metric-desc" id="popupMetricUvDesc">Wear sunscreen & sunglasses</p>
+                            </div>
+                        </div>
+
+                        <!-- 3. Wind & Gusts -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-wind"></i> Wind & Breeze</span>
+                                <span class="wind-dir-badge" id="popupMetricWindDir">NE</span>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val" id="popupMetricWindVal">-- km/h</div>
+                                <p class="metric-desc" id="popupMetricWindDesc">Gentle gentle breeze</p>
+                            </div>
+                        </div>
+
+                        <!-- 4. Humidity -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-droplet"></i> Humidity</span>
+                                <span class="metric-status-tag" id="popupMetricHumidityTag">Normal</span>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val" id="popupMetricHumidityVal">--%</div>
+                                <p class="metric-desc" id="popupMetricHumidityDesc">Dew point is comfortable</p>
+                            </div>
+                        </div>
+
+                        <!-- 5. Rain & Precipitation -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-cloud-rain"></i> Rain Probability</span>
+                                <span class="metric-status-tag" id="popupMetricPrecipProbTag">0%</span>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val" id="popupMetricPrecipVal">0 mm</div>
+                                <p class="metric-desc" id="popupMetricPrecipDesc">No rain expected today</p>
+                            </div>
+                        </div>
+
+                        <!-- 6. Visibility -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-eye"></i> Visibility</span>
+                                <span class="metric-status-tag tag-green" id="popupMetricVisibilityTag">Clear</span>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val" id="popupMetricVisibilityVal">-- km</div>
+                                <p class="metric-desc" id="popupMetricVisibilityDesc">Optimal driving & walking visibility</p>
+                            </div>
+                        </div>
+
+                        <!-- 7. Sunrise & Sunset -->
+                        <div class="metric-card metric-card-span-2">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-mountain-sun"></i> Sun & Daylight</span>
+                                <span class="daylight-tag" id="popupMetricDaylightHours">Daylight: -- hrs</span>
+                            </div>
+                            <div class="sun-times-row">
+                                <div class="sun-time-box">
+                                    <i class="fa-solid fa-sunrise sun-icon sunrise-icon"></i>
+                                    <div>
+                                        <span class="sun-label">Sunrise</span>
+                                        <span class="sun-val" id="popupMetricSunriseVal">--:-- AM</span>
+                                    </div>
+                                </div>
+                                <div class="sun-arc-mini">
+                                    <div class="sun-arc-line"></div>
+                                </div>
+                                <div class="sun-time-box">
+                                    <i class="fa-solid fa-sunset sun-icon sunset-icon"></i>
+                                    <div>
+                                        <span class="sun-label">Sunset</span>
+                                        <span class="sun-val" id="popupMetricSunsetVal">--:-- PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 8. Air Pressure & Cloud Cover -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-cloud"></i> Cloud Cover</span>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val" id="popupMetricCloudCover">--%</div>
+                                <p class="metric-desc" id="popupMetricPressureDesc">Pressure: 1012 hPa</p>
+                            </div>
+                        </div>
+
+                        <!-- 9. Tourist Activity Suitability -->
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-title"><i class="fa-solid fa-person-walking"></i> Outdoor Comfort</span>
+                            </div>
+                            <div class="metric-card-body">
+                                <div class="metric-primary-val val-green" id="popupMetricTouristScore">9.2 / 10</div>
+                                <p class="metric-desc" id="popupMetricTouristDesc">Great conditions for heritage tours</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7-Day Extended Forecast -->
+                <section class="extended-forecast-section" aria-label="7-Day Extended Forecast">
+                    <div class="section-header-flex">
+                        <div class="section-title-wrap">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <h3 class="section-heading">7-Day Travel Forecast</h3>
+                        </div>
+                        <span class="section-subtext">Daily Projections</span>
+                    </div>
+
+                    <div class="forecast-list" id="popupExtendedForecastList">
+                        <!-- Dynamically populated daily forecast cards -->
+                        <div class="daily-loading-placeholder">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
+                            <span>Loading 7-day forecast...</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Travel Safety Precautions & Packing Tips Card -->
+                <section class="packing-tips-card" aria-label="Travel Recommendations">
+                    <div class="tips-header">
+                        <div class="tips-icon">
+                            <i class="fa-solid fa-suitcase-rolling"></i>
+                        </div>
+                        <div>
+                            <h4>Smart Tourist Packing & Travel Tips</h4>
+                            <p>AI suggestions based on today's weather in <span id="popupTipsCitySpan">this area</span></p>
+                        </div>
+                    </div>
+                    <div class="tips-grid" id="popupSmartTipsGrid">
+                        <div class="tip-item">
+                            <i class="fa-solid fa-bottle-water"></i>
+                            <div>
+                                <strong>Hydration</strong>
+                                <p id="popupTipHydrationText">Carry reusable water bottle</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fa-solid fa-shirt"></i>
+                            <div>
+                                <strong>Clothing</strong>
+                                <p id="popupTipClothingText">Breathable cotton & light colors</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fa-solid fa-umbrella"></i>
+                            <div>
+                                <strong>Gear</strong>
+                                <p id="popupTipGearText">Sunglasses & UV cap recommended</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fa-solid fa-camera"></i>
+                            <div>
+                                <strong>Best Photo Hours</strong>
+                                <p id="popupTipPhotoText">Golden hour 5:30 PM – 6:30 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
     <footer>
         <nav class="bottom-nav">
 
@@ -605,6 +964,7 @@
     <script src="../../backend/db.js"></script>
     <script src="../../backend/index.js"></script>
     <script src="../../backend/profile-popup.js"></script>
+    <script src="../../backend/weather-popup.js"></script>
 
 </body>
 
