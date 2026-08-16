@@ -2,10 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeYatra AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SafeYatra AI - Smart Tourist Safety</title>
+
+    <!-- Web App Manifest & PWA Meta for Bubblewrap / TWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2E7D32">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SafeYatra AI">
+
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/assests/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assests/icon-512.png">
+    <link rel="apple-touch-icon" href="/assests/apple-touch-icon.png">
+
     <script>
-        // Check if user is logged in
+        // Register Service Worker for PWA / Bubblewrap
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then(function (reg) {
+                        console.log('SafeYatra AI Service Worker registered successfully:', reg.scope);
+                    })
+                    .catch(function (err) {
+                        console.warn('Service Worker registration failed:', err);
+                    });
+            });
+        }
+
+        // Check if user is logged in and redirect
         var loggedMobile = localStorage.getItem('safeyatra_logged_mobile');
         if (loggedMobile && loggedMobile.trim() !== "") {
             window.location.href = "frontend/html/index.html";
@@ -14,7 +41,11 @@
         }
     </script>
 </head>
-<body>
-    <p>Redirecting to <a href="frontend/html/login.html">SafeYatra AI</a>...</p>
+<body style="margin: 0; background-color: #F5F7FB; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;">
+    <div style="text-align: center; color: #166534;">
+        <img src="/assests/icon-192.png" alt="SafeYatra AI" style="width: 80px; height: 80px; margin-bottom: 16px; border-radius: 20px;">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 800;">SafeYatra AI</h2>
+        <p style="margin: 8px 0 0; font-size: 14px; color: #64748B;">Launching travel safety companion...</p>
+    </div>
 </body>
 </html>
