@@ -1,41 +1,42 @@
 /**
  * SafeYatra AI - Progressive Web App (PWA) Service Worker
- * Enables offline caching, fast asset delivery, and Google Bubblewrap / TWA compliance.
+ * Enables offline caching, fast asset delivery, and Google Bubblewrap / GitHub Pages / PWA Builder compatibility.
  */
 
-const CACHE_NAME = 'safeyatra-pwa-v1.1';
+const CACHE_NAME = 'safeyatra-pwa-v1.2';
 
 const STATIC_ASSETS = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/assests/topbar.avif',
-    '/assests/icon-192.png',
-    '/assests/icon-512.png',
-    '/assests/icon-maskable-512.png',
-    '/frontend/html/index.html',
-    '/frontend/html/login.html',
-    '/frontend/html/weather.html',
-    '/frontend/html/alerts.html',
-    '/frontend/html/map.html',
-    '/frontend/html/sos.html',
-    '/frontend/html/profile.html',
-    '/frontend/css/style.css',
-    '/frontend/css/weather.css',
-    '/frontend/css/alerts.css',
-    '/frontend/css/map.css',
-    '/frontend/css/sos.css',
-    '/frontend/css/profile.css',
-    '/frontend/css/login.css',
-    '/backend/firebase-config.js',
-    '/backend/db.js',
-    '/backend/index.js',
-    '/backend/weather.js',
-    '/backend/alerts.js',
-    '/backend/maps.js',
-    '/backend/sos.js',
-    '/backend/profile.js',
-    '/backend/login.js'
+    './',
+    './index.html',
+    './manifest.json',
+    './assests/topbar.avif',
+    './assests/icon-96.png',
+    './assests/icon-192.png',
+    './assests/icon-512.png',
+    './assests/icon-maskable-512.png',
+    './frontend/html/index.html',
+    './frontend/html/login.html',
+    './frontend/html/weather.html',
+    './frontend/html/alerts.html',
+    './frontend/html/map.html',
+    './frontend/html/sos.html',
+    './frontend/html/profile.html',
+    './frontend/css/style.css',
+    './frontend/css/weather.css',
+    './frontend/css/alerts.css',
+    './frontend/css/map.css',
+    './frontend/css/sos.css',
+    './frontend/css/profile.css',
+    './frontend/css/login.css',
+    './backend/firebase-config.js',
+    './backend/db.js',
+    './backend/index.js',
+    './backend/weather.js',
+    './backend/alerts.js',
+    './backend/maps.js',
+    './backend/sos.js',
+    './backend/profile.js',
+    './backend/login.js'
 ];
 
 // Install Event: Cache Core App Shell Assets
@@ -68,11 +69,11 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch Event: Network-first for dynamic APIs, Cache-first for static assets
+// Fetch Event: Stale-While-Revalidate for static assets, Network-first for APIs
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // Bypass caching for cross-origin APIs (Open-Meteo, Firebase, OpenStreetMap tiles)
+    // Bypass caching for external cross-origin APIs (Open-Meteo, Firebase, BigDataCloud)
     if (url.origin !== self.location.origin) {
         return;
     }
@@ -80,14 +81,14 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
-                // Fetch in background to revalidate cache (Stale-While-Revalidate)
+                // Background revalidation
                 fetch(event.request).then((networkResponse) => {
                     if (networkResponse && networkResponse.status === 200) {
                         caches.open(CACHE_NAME).then((cache) => {
                             cache.put(event.request, networkResponse);
                         });
                     }
-                }).catch(() => {/* Offline fallback */});
+                }).catch(() => {});
 
                 return cachedResponse;
             }
@@ -104,9 +105,9 @@ self.addEventListener('fetch', (event) => {
 
                 return networkResponse;
             }).catch(() => {
-                // Offline fallback page if HTML navigation fails
+                // Offline fallback
                 if (event.request.headers.get('accept')?.includes('text/html')) {
-                    return caches.match('/frontend/html/index.html');
+                    return caches.match('./frontend/html/index.html') || caches.match('./index.html');
                 }
             });
         })

@@ -43,7 +43,7 @@ body{
     width:31px;
     min-height:20px;
     margin: 0px 3px 0px 6px;
-    background-image:url("/assests/topbar.avif");
+    background-image:url("../../assests/topbar.avif");
     background-size:cover;
     background-repeat:no-repeat;
 

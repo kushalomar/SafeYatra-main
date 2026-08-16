@@ -1,10 +1,10 @@
 {
-  "id": "/",
+  "id": "./",
   "name": "SafeYatra AI - Smart Tourist Safety",
   "short_name": "SafeYatra",
   "description": "AI-Powered Tourist Safety, Real-Time Geo-Advisories, Live Weather & 24/7 Emergency SOS Hub",
-  "start_url": "/index.html",
-  "scope": "/",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "display_override": [
     "window-controls-overlay",
@@ -25,25 +25,25 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/assests/icon-96.png",
+      "src": "assests/icon-96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assests/icon-192.png",
+      "src": "assests/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assests/icon-512.png",
+      "src": "assests/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assests/icon-maskable-512.png",
+      "src": "assests/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -54,10 +54,10 @@
       "name": "Emergency SOS",
       "short_name": "SOS",
       "description": "Instant 3-second SOS dispatch with live coordinates",
-      "url": "/frontend/html/sos.html",
+      "url": "frontend/html/sos.html",
       "icons": [
         {
-          "src": "/assests/icon-192.png",
+          "src": "assests/icon-192.png",
           "sizes": "192x192"
         }
       ]
@@ -66,10 +66,10 @@
       "name": "Live Weather",
       "short_name": "Weather",
       "description": "Real-time travel climate & tourist weather advisory",
-      "url": "/frontend/html/weather.html",
+      "url": "frontend/html/weather.html",
       "icons": [
         {
-          "src": "/assests/icon-192.png",
+          "src": "assests/icon-192.png",
           "sizes": "192x192"
         }
       ]
@@ -78,10 +78,10 @@
       "name": "Safety Map",
       "short_name": "Map",
       "description": "Live GPS safety zones & emergency services map",
-      "url": "/frontend/html/map.html",
+      "url": "frontend/html/map.html",
       "icons": [
         {
-          "src": "/assests/icon-192.png",
+          "src": "assests/icon-192.png",
           "sizes": "192x192"
         }
       ]
@@ -90,10 +90,10 @@
       "name": "Live Alerts",
       "short_name": "Alerts",
       "description": "Real-time tourist safety alerts and area advisories",
-      "url": "/frontend/html/alerts.html",
+      "url": "frontend/html/alerts.html",
       "icons": [
         {
-          "src": "/assests/icon-192.png",
+          "src": "assests/icon-192.png",
           "sizes": "192x192"
         }
       ]
