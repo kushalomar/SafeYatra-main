@@ -137,10 +137,13 @@ body {
     color: #2563eb !important;
     background: #eff6ff !important;
 }
+
 /* Location */
 .location {
-    color: #ef4444 !important;;
-    background: #fef2f2 !important;;
+    color: #ef4444 !important;
+    ;
+    background: #fef2f2 !important;
+    ;
 }
 
 /* AI Assistant */
@@ -150,7 +153,7 @@ body {
 }
 
 /* Weather & Maps */
-.weather{
+.weather {
     color: #0ea5e9;
     background: #f0f9ff;
 }
@@ -163,7 +166,7 @@ body {
 }
 
 /* Third Party Services */
-.third{
+.third {
     color: #f59e0b;
     background: #fffbeb;
 }
@@ -175,7 +178,7 @@ body {
 }
 
 /* Your Choices */
-.choice{
+.choice {
     color: #6366f1;
     background: #eef2ff;
 }

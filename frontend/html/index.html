@@ -469,7 +469,7 @@
                             <i class="fa-solid fa-chevron-right chevron-icon"></i>
                         </div>
 
-                        <div class="setting-row-item">
+                        <a href="privacy.html" class="setting-row-item" id="privacySettingsRow">
                             <div class="setting-item-left">
                                 <div class="setting-icon-box icon-purple">
                                     <i class="fa-solid fa-shield-halved"></i>
@@ -480,7 +480,7 @@
                                 </div>
                             </div>
                             <i class="fa-solid fa-chevron-right chevron-icon"></i>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
@@ -580,7 +580,7 @@
          ========================================================================== -->
     <div id="weatherPopupOverlay" class="weather-popup-overlay" aria-hidden="true">
         <div class="weather-popup-sheet" role="dialog" aria-modal="true" aria-labelledby="weatherPopupTitle">
-            
+
             <!-- Popup Header Bar -->
             <div class="weather-popup-header">
                 <div class="weather-popup-handle"></div>
@@ -606,12 +606,14 @@
                         </div>
 
                         <!-- Refresh Button -->
-                        <button class="weather-popup-close" id="popupRefreshWeatherBtn" title="Refresh Live Data" aria-label="Refresh Data">
+                        <button class="weather-popup-close" id="popupRefreshWeatherBtn" title="Refresh Live Data"
+                            aria-label="Refresh Data">
                             <i class="fa-solid fa-rotate-right" id="popupRefreshIcon"></i>
                         </button>
 
                         <!-- Close Button -->
-                        <button id="closeWeatherPopupBtn" class="weather-popup-close" title="Close Weather" aria-label="Close Weather">
+                        <button id="closeWeatherPopupBtn" class="weather-popup-close" title="Close Weather"
+                            aria-label="Close Weather">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
@@ -620,13 +622,15 @@
 
             <!-- Popup Scrollable Content -->
             <div class="weather-popup-scroll">
-                
+
                 <!-- Search & Destination Quick-Select Bar -->
                 <section class="search-section" aria-label="Search destination weather">
                     <form id="popupWeatherSearchForm" class="weather-search-box">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" id="popupWeatherSearchInput" placeholder="Search city (e.g. Jaipur, Goa, Agra)..." autocomplete="off">
-                        <button type="button" id="popupUseCurrentLocationBtn" class="geo-detect-btn" title="Use My Current GPS Location">
+                        <input type="text" id="popupWeatherSearchInput"
+                            placeholder="Search city (e.g. Jaipur, Goa, Agra)..." autocomplete="off">
+                        <button type="button" id="popupUseCurrentLocationBtn" class="geo-detect-btn"
+                            title="Use My Current GPS Location">
                             <i class="fa-solid fa-location-crosshairs"></i>
                         </button>
                         <button type="submit" class="search-submit-btn">Search</button>
@@ -638,19 +642,27 @@
                     <!-- Quick Tourist Destination Chips -->
                     <div class="quick-destinations-scroll">
                         <span class="chips-label"><i class="fa-solid fa-fire"></i> Popular:</span>
-                        <button class="dest-chip" data-city="Agra" data-lat="27.1751" data-lng="78.0421">Taj Mahal, Agra</button>
-                        <button class="dest-chip" data-city="Jaipur" data-lat="26.9124" data-lng="75.7873">Jaipur</button>
-                        <button class="dest-chip" data-city="New Delhi" data-lat="28.6139" data-lng="77.2090">New Delhi</button>
-                        <button class="dest-chip" data-city="Varanasi" data-lat="25.3176" data-lng="82.9739">Varanasi</button>
+                        <button class="dest-chip" data-city="Agra" data-lat="27.1751" data-lng="78.0421">Taj Mahal,
+                            Agra</button>
+                        <button class="dest-chip" data-city="Jaipur" data-lat="26.9124"
+                            data-lng="75.7873">Jaipur</button>
+                        <button class="dest-chip" data-city="New Delhi" data-lat="28.6139" data-lng="77.2090">New
+                            Delhi</button>
+                        <button class="dest-chip" data-city="Varanasi" data-lat="25.3176"
+                            data-lng="82.9739">Varanasi</button>
                         <button class="dest-chip" data-city="Goa" data-lat="15.2993" data-lng="74.1240">Goa</button>
-                        <button class="dest-chip" data-city="Shimla" data-lat="31.1048" data-lng="77.1734">Shimla</button>
-                        <button class="dest-chip" data-city="Manali" data-lat="32.2432" data-lng="77.1892">Manali</button>
-                        <button class="dest-chip" data-city="Mumbai" data-lat="19.0760" data-lng="72.8777">Mumbai</button>
+                        <button class="dest-chip" data-city="Shimla" data-lat="31.1048"
+                            data-lng="77.1734">Shimla</button>
+                        <button class="dest-chip" data-city="Manali" data-lat="32.2432"
+                            data-lng="77.1892">Manali</button>
+                        <button class="dest-chip" data-city="Mumbai" data-lat="19.0760"
+                            data-lng="72.8777">Mumbai</button>
                     </div>
                 </section>
 
                 <!-- Dynamic Hero Weather Card (Current Day) -->
-                <section class="hero-weather-card theme-clear-day" id="popupHeroWeatherCard" aria-label="Today's Current Weather">
+                <section class="hero-weather-card theme-clear-day" id="popupHeroWeatherCard"
+                    aria-label="Today's Current Weather">
                     <div class="hero-card-glow"></div>
                     <div class="hero-card-bg-pattern"></div>
 
@@ -679,9 +691,11 @@
                             </div>
                             <div class="hero-condition-text" id="popupHeroConditionText">Fetching conditions...</div>
                             <div class="hero-high-low-row">
-                                <span><i class="fa-solid fa-arrow-up"></i> H: <strong id="popupHeroHighTemp">--°</strong></span>
+                                <span><i class="fa-solid fa-arrow-up"></i> H: <strong
+                                        id="popupHeroHighTemp">--°</strong></span>
                                 <span class="divider">•</span>
-                                <span><i class="fa-solid fa-arrow-down"></i> L: <strong id="popupHeroLowTemp">--°</strong></span>
+                                <span><i class="fa-solid fa-arrow-down"></i> L: <strong
+                                        id="popupHeroLowTemp">--°</strong></span>
                                 <span class="divider">•</span>
                                 <span>Feels like <strong id="popupHeroFeelsLike">--°</strong></span>
                             </div>
@@ -744,8 +758,10 @@
                         <!-- 1. Feels Like -->
                         <div class="metric-card">
                             <div class="metric-card-header">
-                                <span class="metric-title"><i class="fa-solid fa-temperature-half"></i> Feels Like</span>
-                                <i class="fa-solid fa-circle-info metric-info-icon" title="Perceived temperature based on humidity & wind"></i>
+                                <span class="metric-title"><i class="fa-solid fa-temperature-half"></i> Feels
+                                    Like</span>
+                                <i class="fa-solid fa-circle-info metric-info-icon"
+                                    title="Perceived temperature based on humidity & wind"></i>
                             </div>
                             <div class="metric-card-body">
                                 <div class="metric-primary-val" id="popupMetricFeelsLike">--°</div>
@@ -795,7 +811,8 @@
                         <!-- 5. Rain & Precipitation -->
                         <div class="metric-card">
                             <div class="metric-card-header">
-                                <span class="metric-title"><i class="fa-solid fa-cloud-rain"></i> Rain Probability</span>
+                                <span class="metric-title"><i class="fa-solid fa-cloud-rain"></i> Rain
+                                    Probability</span>
                                 <span class="metric-status-tag" id="popupMetricPrecipProbTag">0%</span>
                             </div>
                             <div class="metric-card-body">
@@ -812,14 +829,16 @@
                             </div>
                             <div class="metric-card-body">
                                 <div class="metric-primary-val" id="popupMetricVisibilityVal">-- km</div>
-                                <p class="metric-desc" id="popupMetricVisibilityDesc">Optimal driving & walking visibility</p>
+                                <p class="metric-desc" id="popupMetricVisibilityDesc">Optimal driving & walking
+                                    visibility</p>
                             </div>
                         </div>
 
                         <!-- 7. Sunrise & Sunset -->
                         <div class="metric-card metric-card-span-2">
                             <div class="metric-card-header">
-                                <span class="metric-title"><i class="fa-solid fa-mountain-sun"></i> Sun & Daylight</span>
+                                <span class="metric-title"><i class="fa-solid fa-mountain-sun"></i> Sun &
+                                    Daylight</span>
                                 <span class="daylight-tag" id="popupMetricDaylightHours">Daylight: -- hrs</span>
                             </div>
                             <div class="sun-times-row">
@@ -857,11 +876,13 @@
                         <!-- 9. Tourist Activity Suitability -->
                         <div class="metric-card">
                             <div class="metric-card-header">
-                                <span class="metric-title"><i class="fa-solid fa-person-walking"></i> Outdoor Comfort</span>
+                                <span class="metric-title"><i class="fa-solid fa-person-walking"></i> Outdoor
+                                    Comfort</span>
                             </div>
                             <div class="metric-card-body">
                                 <div class="metric-primary-val val-green" id="popupMetricTouristScore">9.2 / 10</div>
-                                <p class="metric-desc" id="popupMetricTouristDesc">Great conditions for heritage tours</p>
+                                <p class="metric-desc" id="popupMetricTouristDesc">Great conditions for heritage tours
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -894,7 +915,8 @@
                         </div>
                         <div>
                             <h4>Smart Tourist Packing & Travel Tips</h4>
-                            <p>AI suggestions based on today's weather in <span id="popupTipsCitySpan">this area</span></p>
+                            <p>AI suggestions based on today's weather in <span id="popupTipsCitySpan">this area</span>
+                            </p>
                         </div>
                     </div>
                     <div class="tips-grid" id="popupSmartTipsGrid">
