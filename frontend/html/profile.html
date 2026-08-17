@@ -51,11 +51,6 @@
                     <h2 id="displayUserName" class="user-full-name">Loading Profile...</h2>
                     <p id="displayUserMobile" class="user-contact-text"></p>
                     <p id="displayUserEmail" class="user-contact-text"></p>
-
-                    <!-- <div class="digilocker-badge">
-                        <i class="fa-solid fa-check"></i>
-                        <span>Verified</span>
-                    </div> -->
                 </div>
 
                 <button id="editProfileBtn" class="edit-profile-btn" title="Edit Profile">
@@ -124,71 +119,22 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- 4. Settings & Preferences Section -->
-        <div class="settings-section-wrap">
-            <h3 class="settings-section-title">Settings & Preferences</h3>
-
-            <div class="settings-card-list">
-                <!-- Item 1: Notifications -->
-                <a href="#" class="setting-row-item">
-                    <div class="setting-item-left">
-                        <div class="setting-icon-box icon-blue">
-                            <i class="fa-solid fa-bell"></i>
-                        </div>
-                        <div class="setting-text-meta">
-                            <h4>Notifications</h4>
-                            <p>All alerts on</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
-                </a>
-
-                <!-- Item 2: Live Location -->
-                <a href="#" class="setting-row-item">
-                    <div class="setting-item-left">
-                        <div class="setting-icon-box icon-green">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div class="setting-text-meta">
-                            <h4>Live Location</h4>
-                            <p>Enabled · 24/7</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
-                </a>
-
-                <!-- Item 3: Emergency Contacts -->
-                <a href="#" class="setting-row-item">
-                    <div class="setting-item-left">
-                        <div class="setting-icon-box icon-orange">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                        <div class="setting-text-meta">
-                            <h4>Emergency Contacts</h4>
-                            <p id="emergencyCountText">Emergency: 1234567890</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
-                </a>
-
                 <!-- Item 4: Privacy & Data -->
-                <a href="#" class="setting-row-item">
+                <a href="privacy.html" class="setting-row-item">
                     <div class="setting-item-left">
                         <div class="setting-icon-box icon-purple">
                             <i class="fa-solid fa-shield-halved"></i>
                         </div>
                         <div class="setting-text-meta">
                             <h4>Privacy & Data</h4>
-                            <p>Govt. secured</p>
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-right chevron-icon"></i>
                 </a>
             </div>
         </div>
+
+        <!-- 4. Settings & Preferences Section -->
 
         <!-- 5. Government Compliance Banner -->
         <div class="ministry-compliance-card">
@@ -231,11 +177,11 @@
                 <div class="form-row-2">
                     <div class="form-group">
                         <label>Mobile Number</label>
-                        <input type="text" id="inputMobile" placeholder="+91 98765 43210" required>
+                        <input type="text" id="inputMobile" placeholder="+91 12345 67890" required>
                     </div>
                     <div class="form-group">
                         <label>Age</label>
-                        <input type="number" id="inputAge" placeholder="26" min="1" max="120" required>
+                        <input type="number" id="inputAge" placeholder="20" min="1" max="120" required>
                     </div>
                 </div>
 
@@ -255,18 +201,18 @@
                     </div>
                     <div class="form-group">
                         <label>Emergency Contact</label>
-                        <input type="text" id="inputEmergency" placeholder="1234567890" required>
+                        <input type="text" id="inputEmergency" placeholder="+91 12345 67890" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" id="inputEmail" placeholder="arjun.sharma@email.com" required>
+                    <input type="email" id="inputEmail" placeholder="user@email.com" required>
                 </div>
 
                 <div class="form-group">
                     <label>Address / Location</label>
-                    <input type="text" id="inputAddress" placeholder="Agra, Uttar Pradesh, India" required>
+                    <input type="text" id="inputAddress" placeholder="Kanpur, Uttar Pradesh, India" required>
                 </div>
 
                 <button type="submit" class="btn-save-profile">
@@ -293,10 +239,6 @@
             <a href="alerts.html" class="nav-item">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <span>Alerts</span>
-            </a>
-            <a href="profile.html" class="nav-item active">
-                <i class="fa-solid fa-user"></i>
-                <span>Profile</span>
             </a>
         </nav>
     </footer>
