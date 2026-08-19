@@ -14,7 +14,8 @@ body {
 
 /* PROFILE HEADER */
 
-html,body {
+html,
+body {
     overflow-x: hidden;
     background-color: #F4EFE6;
     color: #0F172A;
@@ -701,7 +702,7 @@ main.profile-container {
     -webkit-overflow-scrolling: touch;
 }
 
-.profile-popup-scroll > * {
+.profile-popup-scroll>* {
     flex-shrink: 0;
 }
 
@@ -755,7 +756,8 @@ main.profile-container {
     letter-spacing: 0.5px;
 }
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select {
     padding: 12px 14px;
     border-radius: 12px;
     border: 1px solid #CBD5E1;
@@ -766,7 +768,8 @@ main.profile-container {
     transition: border-color 0.2s;
 }
 
-.form-group input:focus, .form-group select:focus {
+.form-group input:focus,
+.form-group select:focus {
     border-color: #2563EB;
     background: #FFFFFF;
 }

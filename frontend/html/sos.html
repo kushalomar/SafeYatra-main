@@ -9,7 +9,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Web App Manifest & PWA Meta for Bubblewrap / PWA Builder / GitHub Pages -->
     <link rel="manifest" href="../../manifest.json">
@@ -136,6 +138,13 @@
                 </div>
                 <span>Medical ID</span>
             </div>
+
+            <div id="testNearbySosBtn" class="toolkit-card" style="cursor: pointer;">
+                <div class="toolkit-icon red">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                </div>
+                <span>Test 1km Alert</span>
+            </div>
         </div>
 
         <!-- Emergency Helplines Quick Dials -->
@@ -191,8 +200,9 @@
         <div class="modal-box sos-triggered-box">
             <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
             <h2>SOS ALERT DISPATCHED!</h2>
-            <p>Siren activated & location link prepared for emergency contact <strong id="modalEmergencyContactText">+91 1234567890</strong>.</p>
-            
+            <p>Siren activated & location link prepared for emergency contact <strong id="modalEmergencyContactText">+91
+                    1234567890</strong>.</p>
+
             <div class="auto-countdown-pill">
                 Auto SMS Dispatching in <span id="modalCountdown">10</span>s
             </div>
@@ -265,9 +275,11 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-<!-- SafeYatra Scripts -->
+<!-- SafeYatra / TravelSathi Scripts -->
 <script src="../../backend/firebase-config.js"></script>
 <script src="../../backend/db.js"></script>
+<script src="../../backend/nearby-sos.js"></script>
 <script src="../../backend/sos.js"></script>
+<script src="../../backend/page-transitions.js"></script>
 
 </html>

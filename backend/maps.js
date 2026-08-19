@@ -7,7 +7,7 @@ let policeMarker = null;
 let policeRouteLayer = null;
 
 // Emergency Locations Data (Placeholder array)
-const emergencyLocations = []; 
+const emergencyLocations = [];
 
 // Sample Safe Route
 const routePoints = [
@@ -166,7 +166,7 @@ async function findNearestPoliceStation(userLat, userLng) {
 
         for (const delta of deltas) {
             const viewbox = `${userLng - delta},${userLat + delta},${userLng + delta},${userLat - delta}`;
-            
+
             // Try amenity=police first
             let url = `https://nominatim.openstreetmap.org/search?amenity=police&format=json&limit=15&viewbox=${viewbox}&bounded=1&lat=${userLat}&lon=${userLng}`;
             let response = await fetch(url);
@@ -244,8 +244,8 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 }
@@ -266,7 +266,7 @@ async function displayPoliceStation(userLat, userLng, station) {
 
     policeMarker = L.marker([station.lat, station.lng], { icon: policeIcon }).addTo(map);
 
-    const distText = station.distanceKm < 1 
+    const distText = station.distanceKm < 1
         ? `${Math.round(station.distanceKm * 1000)} m away`
         : `${station.distanceKm.toFixed(1)} km away`;
 
@@ -296,7 +296,7 @@ async function displayRoute(userLat, userLng, destLat, destLng, station) {
     try {
         const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${destLng},${destLat}?overview=full&geometries=geojson`;
         const res = await fetch(osrmUrl);
-        
+
         if (res.ok) {
             const data = await res.json();
             if (data.routes && data.routes.length > 0) {
@@ -330,12 +330,12 @@ async function displayRoute(userLat, userLng, destLat, destLng, station) {
         map.fitBounds(bounds, { padding: [50, 50] });
     }
 
-    const distFormatted = routeDistKm < 1 
+    const distFormatted = routeDistKm < 1
         ? `${Math.round(routeDistKm * 1000)} m away`
         : `${routeDistKm.toFixed(1)} km away`;
 
-    const statusText = durationMins 
-        ? `${distFormatted} • Est. ${durationMins} min route` 
+    const statusText = durationMins
+        ? `${distFormatted} • Est. ${durationMins} min route`
         : distFormatted;
 
     showEmergencyCard(station.name, statusText, { lat: station.lat, lng: station.lng });
@@ -380,9 +380,9 @@ function setupSearch() {
         e.preventDefault();
         const searchInput = document.getElementById("searchInput");
         const query = searchInput.value.trim();
-        
+
         if (!query) return;
-        
+
         await searchLocation(query);
     });
 }
@@ -397,16 +397,16 @@ async function searchLocation(query) {
 
         const encodedQuery = encodeURIComponent(query);
         const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodedQuery}&format=json&limit=5`);
-        
+
         if (!response.ok) throw new Error("Network response was not ok");
-        
+
         const data = await response.json();
-        
+
         if (data.length === 0) {
             resultsContainer.innerHTML = '<div class="error-msg">No results found.</div>';
             return;
         }
-        
+
         displaySearchResults(data, resultsContainer);
 
     } catch (error) {
@@ -417,17 +417,17 @@ async function searchLocation(query) {
 
 function displaySearchResults(results, container) {
     container.innerHTML = "";
-    
+
     results.forEach((result) => {
         const item = document.createElement("div");
         item.className = "search-result-item";
         item.textContent = result.display_name;
-        
+
         item.addEventListener("click", () => {
             selectSearchResult(result);
             container.style.display = "none";
         });
-        
+
         container.appendChild(item);
     });
 }
@@ -435,21 +435,21 @@ function displaySearchResults(results, container) {
 function selectSearchResult(result) {
     const lat = parseFloat(result.lat);
     const lon = parseFloat(result.lon);
-    
+
     if (isNaN(lat) || isNaN(lon)) {
         alert("Invalid coordinates for the selected location.");
         return;
     }
-    
+
     if (map) {
         map.setView([lat, lon], 16);
-        
+
         if (searchMarker) {
             map.removeLayer(searchMarker);
         }
-        
+
         searchMarker = L.marker([lat, lon]).addTo(map);
-        
+
         const name = result.name || result.display_name.split(",")[0];
         const popupContent = `
             <div style="text-align:center;">
@@ -463,14 +463,14 @@ function selectSearchResult(result) {
     }
 }
 
-window.navigateToLocation = function(lat, lng) {
+window.navigateToLocation = function (lat, lng) {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
     window.open(url, "_blank");
 };
 
 function addEmergencyMarkers() {
     if (!map || emergencyLocations.length === 0) return;
-    
+
     emergencyLocations.forEach(loc => {
         const marker = L.marker([loc.lat, loc.lng]).addTo(map);
         const popupContent = `
