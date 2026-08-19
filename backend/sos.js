@@ -214,11 +214,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     function triggerSOS() {
         if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
 
-        // Broadcast to all TravelSathi users within 1 km
-        if (typeof NearbySOS !== 'undefined' && NearbySOS.broadcastSOS) {
-            NearbySOS.broadcastSOS({ lat: currentLat, lng: currentLng });
-        }
-
         // Show Modal
         if (sosModal) sosModal.classList.add('active');
 
@@ -248,11 +243,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         modalCancelBtn.addEventListener('click', () => {
             if (sosModal) sosModal.classList.remove('active');
             stopSiren();
-
-            // Resolve SOS Broadcast
-            if (typeof NearbySOS !== 'undefined' && NearbySOS.resolveActiveSOS) {
-                NearbySOS.resolveActiveSOS();
-            }
 
             if (countdownInterval) {
                 clearInterval(countdownInterval);
@@ -459,17 +449,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (closeMedicalModal && medicalIdModal) {
         closeMedicalModal.addEventListener('click', () => {
             medicalIdModal.classList.remove('active');
-        });
-    }
-
-    // 8. Test 1km Nearby SOS Simulation
-    const testNearbySosBtn = document.getElementById('testNearbySosBtn');
-    if (testNearbySosBtn) {
-        testNearbySosBtn.addEventListener('click', () => {
-            if (typeof NearbySOS !== 'undefined' && NearbySOS.simulateNearbySOS) {
-                NearbySOS.simulateNearbySOS(0.35);
-                showToast("Simulating Nearby SOS Alert (350m radius)...");
-            }
         });
     }
 
