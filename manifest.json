@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "SafeYatra AI - Smart Tourist Safety",
-  "short_name": "SafeYatra",
+  "name": "TravelSathi - Smart Tourist Companion",
+  "short_name": "TravelSathi",
   "description": "AI-Powered Tourist Safety, Real-Time Geo-Advisories, Live Weather & 24/7 Emergency SOS Hub",
   "start_url": "./index.html",
   "scope": "./",

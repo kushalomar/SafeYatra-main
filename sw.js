@@ -1,14 +1,15 @@
 /**
- * SafeYatra AI - Progressive Web App (PWA) Service Worker
+ * TravelSathi - Progressive Web App (PWA) Service Worker
  * Enables offline caching, fast asset delivery, and Google Bubblewrap / GitHub Pages / PWA Builder compatibility.
  */
 
-const CACHE_NAME = 'safeyatra-pwa-v1.2';
+const CACHE_NAME = 'travelsathi-pwa-v1.3';
 
 const STATIC_ASSETS = [
     './',
     './index.html',
     './manifest.json',
+    './assests/logo.png',
     './assests/topbar.avif',
     './assests/icon-96.png',
     './assests/icon-192.png',
@@ -21,6 +22,7 @@ const STATIC_ASSETS = [
     './frontend/html/map.html',
     './frontend/html/sos.html',
     './frontend/html/profile.html',
+    './frontend/html/privacy.html',
     './frontend/css/style.css',
     './frontend/css/weather.css',
     './frontend/css/alerts.css',
@@ -28,6 +30,7 @@ const STATIC_ASSETS = [
     './frontend/css/sos.css',
     './frontend/css/profile.css',
     './frontend/css/login.css',
+    './frontend/css/privacy.css',
     './backend/firebase-config.js',
     './backend/db.js',
     './backend/safety-analysis.js',
@@ -44,9 +47,9 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[SafeYatra SW] Pre-caching App Shell');
+            console.log('[TravelSathi SW] Pre-caching App Shell');
             return cache.addAll(STATIC_ASSETS).catch((err) => {
-                console.warn('[SafeYatra SW] Some assets could not be cached on install:', err);
+                console.warn('[TravelSathi SW] Some assets could not be cached on install:', err);
             });
         })
     );
@@ -60,7 +63,7 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 keyList.map((key) => {
                     if (key !== CACHE_NAME) {
-                        console.log('[SafeYatra SW] Removing old cache:', key);
+                        console.log('[TravelSathi SW] Removing old cache:', key);
                         return caches.delete(key);
                     }
                 })

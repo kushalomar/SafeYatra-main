@@ -13,12 +13,12 @@
     --accent-blue: #3B82F6;
     --accent-blue-light: #EFF6FF;
     --accent-blue-border: #BFDBFE;
-    --bg-page: #F5F7FB;
-    --card-bg: #FFFFFF;
+    --bg-page: #F4EFE6;
+    --card-bg: #FAF6EE;
     --text-dark: #1E293B;
     --text-muted: #64748B;
     --text-light: #94A3B8;
-    --border-color: #E2E8F0;
+    --border-color: #E2D7C7;
     --radius-lg: 20px;
     --radius-md: 14px;
     --radius-sm: 10px;
@@ -82,14 +82,17 @@ body {
     padding: 0 20px 14px 20px;
     overflow-x: auto;
     white-space: nowrap;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
     max-width: 800px;
     margin: 0 auto;
 }
 
 .filter-pills-container::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
+    /* Chrome/Safari */
 }
 
 .filter-pill {
@@ -154,7 +157,7 @@ body {
     bottom: -20px;
     width: 160px;
     height: 160px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
     pointer-events: none;
 }
 
@@ -733,6 +736,7 @@ body {
         opacity: 0;
         transform: translateY(8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

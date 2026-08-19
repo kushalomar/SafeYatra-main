@@ -34,6 +34,18 @@ body {
     margin-bottom: 24px;
 }
 
+.brand-logo-img {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 14px;
+    background: #0b1d0b;
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.45);
+    border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
 .brand-logo-icon {
     width: 64px;
     height: 64px;
@@ -49,9 +61,12 @@ body {
 }
 
 .login-brand-header h2 {
-    font-size: 26px;
+    font-family: 'Outfit', 'Montserrat', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 28px;
     font-weight: 900;
-    letter-spacing: -0.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #FFFFFF;
 }
 
 .login-brand-header p {

@@ -117,6 +117,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Update safety stats score donut ring, confidence, and badges
         updateSafetyCardStats(analysis);
 
+        // Update safety stats score donut ring & badges
+        updateSafetyCardStats(liveTemp, weatherCode);
+
         // Render UI
         updateCounts();
         renderAlerts();
@@ -126,11 +129,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function parseWmoCode(code, temp) {
         let label = "Sunny";
         let advisory = `Temperature is ${temp}°C. Clear travel conditions in ${currentCity}.`;
-        
+
         if (code === 0) {
             label = "Sunny";
-            advisory = temp > 36 
-                ? `Temperature reaching ${temp}°C in ${currentCity}. Stay hydrated, visit monuments before 10 AM or after 4 PM.` 
+            advisory = temp > 36
+                ? `Temperature reaching ${temp}°C in ${currentCity}. Stay hydrated, visit monuments before 10 AM or after 4 PM.`
                 : `Pleasant weather in ${currentCity} (${temp}°C). Great conditions for sightseeing.`;
         } else if (code >= 1 && code <= 3) {
             label = "Partly Cloudy";
@@ -152,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Generate Location-Personalized Alerts Data
     function generateLocationAlerts(city, state, temp, weatherCond, weatherCode, lat, lng) {
         const weatherObj = parseWmoCode(weatherCode, temp);
-        
+
         return [
             {
                 id: 1,
@@ -271,7 +274,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const score = analysis.overallScore;
 
-        if (safetyScoreNum) safetyScoreNum.textContent = score;
+        if (safetyScoreNum) safetyScoreNum.textContent = scor
         // if (confidenceValue) confidenceValue.textContent = `${analysis.confidence}%`;
         
         let scoreTagText = "VERY SAFE";
@@ -371,7 +374,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Action Trigger Function (Executes functional action for View Alternate Route, Call Helpline, Map, SOS)
-    window.triggerAlertAction = function(id, event) {
+    window.triggerAlertAction = function (id, event) {
         if (event) event.stopPropagation();
         const alert = alertsData.find(item => item.id === id);
         if (!alert || !alert.actionUrl) return;
@@ -386,7 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // Dismiss Alert Function
-    window.dismissAlert = function(id) {
+    window.dismissAlert = function (id) {
         const cardEl = document.querySelector(`.alert-card[data-id="${id}"]`);
         if (cardEl) {
             cardEl.classList.add('dismissing');
@@ -399,7 +402,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // Open Alert Details Modal
-    window.openAlertDetails = function(id) {
+    window.openAlertDetails = function (id) {
         const alert = alertsData.find(item => item.id === id);
         if (!alert) return;
 
