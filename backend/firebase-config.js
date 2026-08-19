@@ -19,7 +19,18 @@ const firebaseConfig = {
 if (typeof firebase !== 'undefined' && !firebase.apps.length) {
     try {
         firebase.initializeApp(firebaseConfig);
-        console.log("SafeYatra AI: Production Firebase initialized.");
+        console.log("TravelSathi: Production Firebase initialized.");
+        
+        // Auto Anonymous Auth for real-time Firestore synchronization
+        if (firebase.auth) {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (!user) {
+                    firebase.auth().signInAnonymously().catch((err) => {
+                        console.log("Firebase Auth notice:", err.message);
+                    });
+                }
+            });
+        }
     } catch (e) {
         console.error("Firebase Initialization Error:", e.message);
     }

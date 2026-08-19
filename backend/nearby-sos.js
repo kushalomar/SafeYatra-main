@@ -1,53 +1,86 @@
 /**
- * TravelSathi - Nearby Tourist SOS Mesh Alert Network (1km Radius)
- * When a user holds the SOS button, broadcasts live GPS coordinates to Firestore & local mesh.
- * Any other TravelSathi user within a 1km radius receives an urgent audio & visual emergency modal
- * with direct in-app navigation to the distressed person's exact location.
+ * TravelSathi - Live 1km Radius Nearby Tourist SOS Mesh & Alert Network
+ * When any user triggers SOS, broadcasts real-time GPS coordinates via Firestore & BroadcastChannel.
+ * All active TravelSathi users within 1 km receive an instant audio-visual emergency alert modal
+ * with direct 1-tap Google Maps directions to the distressed person.
  */
 
 const NearbySOS = (function () {
-    const RADIUS_LIMIT_KM = 1.0; // 1 km radius
+    const RADIUS_LIMIT_KM = 1.0; // 1.0 km radius threshold
+    
+    // Unique session ID for this specific browser tab/window (enables instant multi-tab & multi-device testing)
+    let tabSessionId = sessionStorage.getItem('travelsathi_tab_session_id');
+    if (!tabSessionId) {
+        tabSessionId = 'tab_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
+        sessionStorage.setItem('travelsathi_tab_session_id', tabSessionId);
+    }
+
     let alertAudioCtx = null;
     let alertToneInterval = null;
     let isAlertRinging = false;
     let activeAlertData = null;
     let sosBroadcastChannel = null;
-    let hasShownForBroadcastId = new Set();
+    let cachedUserLocation = null;
+    let pollingInterval = null;
+    let activeAlertsProcessed = new Set();
 
-    // 1. Initialize BroadcastChannel for instant local & multi-tab mesh
+    // 1. Keep track of user's current GPS position
+    initLocationTracker();
+
+    function initLocationTracker() {
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                cachedUserLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                try {
+                    sessionStorage.setItem('travelsathi_last_lat', pos.coords.latitude);
+                    sessionStorage.setItem('travelsathi_last_lng', pos.coords.longitude);
+                } catch (e) { }
+            }, () => { }, { enableHighAccuracy: true, timeout: 5000 });
+
+            navigator.geolocation.watchPosition((pos) => {
+                cachedUserLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            }, () => { }, { enableHighAccuracy: true, maximumAge: 10000 });
+        }
+    }
+
+    // 2. Initialize BroadcastChannel for instant local & multi-tab mesh
     try {
         if (typeof BroadcastChannel !== 'undefined') {
             sosBroadcastChannel = new BroadcastChannel('travelsathi_sos_channel');
             sosBroadcastChannel.onmessage = function (event) {
-                if (event && event.data && event.data.type === 'SOS_BROADCAST') {
-                    handleIncomingBroadcast(event.data.payload);
-                } else if (event && event.data && event.data.type === 'SOS_RESOLVE') {
-                    handleResolveBroadcast(event.data.payload);
+                if (event && event.data) {
+                    if (event.data.type === 'SOS_BROADCAST') {
+                        handleIncomingBroadcast(event.data.payload, event.data.senderTabId);
+                    } else if (event.data.type === 'SOS_RESOLVE') {
+                        handleResolveBroadcast(event.data.payload);
+                    }
                 }
             };
         }
     } catch (e) {
-        console.warn("BroadcastChannel not supported:", e);
+        console.warn("BroadcastChannel note:", e);
     }
 
-    // 2. Storage event fallback for cross-tab notifications
+    // 3. Storage event fallback for cross-tab communication
     window.addEventListener('storage', function (e) {
         if (e.key === 'travelsathi_live_sos_alert' && e.newValue) {
             try {
-                const data = JSON.parse(e.newValue);
-                if (data && data.status === 'active') {
-                    handleIncomingBroadcast(data);
-                } else if (data && data.status === 'resolved') {
-                    handleResolveBroadcast(data);
+                const item = JSON.parse(e.newValue);
+                if (item && item.payload) {
+                    if (item.type === 'SOS_BROADCAST' && item.payload.status === 'active') {
+                        handleIncomingBroadcast(item.payload, item.senderTabId);
+                    } else if (item.type === 'SOS_RESOLVE') {
+                        handleResolveBroadcast(item.payload);
+                    }
                 }
             } catch (err) { }
         }
     });
 
     /**
-     * Broadcast an active SOS with current GPS coordinates to Firestore & Mesh
+     * Broadcast an active SOS with current GPS coordinates to Firestore & Local Mesh
      */
-    async function broadcastSOS(customData) {
+    async function broadcastSOS(customCoords) {
         const loggedMobile = (typeof SafeYatraDB !== 'undefined' ? SafeYatraDB.getLoggedInMobile() : "") || localStorage.getItem('travelsathi_logged_mobile') || "9999999999";
         let userName = "TravelSathi Tourist";
         let userEmergency = "1234567890";
@@ -64,14 +97,21 @@ const NearbySOS = (function () {
             } catch (e) { }
         }
 
-        const lat = customData && customData.lat ? parseFloat(customData.lat) : 27.1767;
-        const lng = customData && customData.lng ? parseFloat(customData.lng) : 78.0081;
+        let lat = customCoords && customCoords.lat ? parseFloat(customCoords.lat) : (cachedUserLocation ? cachedUserLocation.lat : null);
+        let lng = customCoords && customCoords.lng ? parseFloat(customCoords.lng) : (cachedUserLocation ? cachedUserLocation.lng : null);
+
+        // Fallback default coordinates if GPS is unavailable
+        if (!lat || !lng) {
+            lat = parseFloat(sessionStorage.getItem('travelsathi_last_lat')) || 27.1767;
+            lng = parseFloat(sessionStorage.getItem('travelsathi_last_lng')) || 78.0081;
+        }
 
         const broadcastId = `sos_${loggedMobile}_${Date.now()}`;
         const payload = {
             id: broadcastId,
             senderMobile: loggedMobile,
             senderName: userName,
+            senderTabId: tabSessionId,
             latitude: lat,
             longitude: lng,
             emergencyContact: userEmergency,
@@ -81,7 +121,7 @@ const NearbySOS = (function () {
             createdAt: Date.now()
         };
 
-        // 1. Save to Firestore if available
+        // 1. Publish to Firestore Database
         if (typeof firebase !== 'undefined' && firebase.firestore) {
             try {
                 const db = firebase.firestore();
@@ -89,17 +129,18 @@ const NearbySOS = (function () {
                     ...payload,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                console.log("TravelSathi SOS published to Firestore:", broadcastId);
+                console.log("[TravelSathi 1km SOS] Broadcast published to Firestore:", broadcastId);
             } catch (err) {
-                console.warn("Firestore SOS write warning:", err.message);
+                console.warn("Firestore SOS write notice:", err.message);
             }
         }
 
         // 2. Broadcast across local mesh & storage
+        const broadcastMsg = { type: 'SOS_BROADCAST', senderTabId: tabSessionId, payload: payload };
         if (sosBroadcastChannel) {
-            sosBroadcastChannel.postMessage({ type: 'SOS_BROADCAST', payload: payload });
+            sosBroadcastChannel.postMessage(broadcastMsg);
         }
-        localStorage.setItem('travelsathi_live_sos_alert', JSON.stringify(payload));
+        localStorage.setItem('travelsathi_live_sos_alert', JSON.stringify(broadcastMsg));
         localStorage.setItem('travelsathi_my_active_sos_id', broadcastId);
 
         return payload;
@@ -123,24 +164,26 @@ const NearbySOS = (function () {
         }
 
         const payload = { id: activeId, senderMobile: loggedMobile, status: 'resolved' };
+        const resolveMsg = { type: 'SOS_RESOLVE', senderTabId: tabSessionId, payload: payload };
+
         if (sosBroadcastChannel) {
-            sosBroadcastChannel.postMessage({ type: 'SOS_RESOLVE', payload: payload });
+            sosBroadcastChannel.postMessage(resolveMsg);
         }
-        localStorage.setItem('travelsathi_live_sos_alert', JSON.stringify(payload));
+        localStorage.setItem('travelsathi_live_sos_alert', JSON.stringify(resolveMsg));
         localStorage.removeItem('travelsathi_my_active_sos_id');
     }
 
     /**
-     * Start Real-Time Firestore & Mesh Listener for 1km SOS Broadcasts
+     * Start Real-Time Firestore & Mesh Listeners for 1km SOS Broadcasts
      */
     function startListening() {
         injectAlertModalDOM();
 
-        // 1. Listen to Firestore Live Collection
+        // 1. Live Firestore Listener
         if (typeof firebase !== 'undefined' && firebase.firestore) {
             try {
                 const db = firebase.firestore();
-                const thirtyMinsAgo = Date.now() - 30 * 60 * 1000;
+                const fifteenMinsAgo = Date.now() - 15 * 60 * 1000;
 
                 db.collection('sos_broadcasts')
                     .where('status', '==', 'active')
@@ -148,59 +191,89 @@ const NearbySOS = (function () {
                         snapshot.docChanges().forEach((change) => {
                             if (change.type === 'added' || change.type === 'modified') {
                                 const data = change.doc.data();
-                                if (data && data.status === 'active' && (!data.createdAt || data.createdAt > thirtyMinsAgo)) {
-                                    handleIncomingBroadcast(data);
+                                if (data && data.status === 'active' && (!data.createdAt || data.createdAt > fifteenMinsAgo)) {
+                                    handleIncomingBroadcast(data, data.senderTabId);
                                 }
                             }
                         });
                     }, (err) => {
-                        console.warn("Firestore SOS Listener warning:", err.message);
+                        console.warn("Firestore listener notice:", err.message);
                     });
             } catch (err) {
-                console.warn("Firestore setup error:", err);
+                console.warn("Firestore setup notice:", err);
             }
         }
+
+        // 2. Periodic Polling fallback (every 5 seconds)
+        if (!pollingInterval) {
+            pollingInterval = setInterval(pollActiveAlerts, 5000);
+        }
+    }
+
+    async function pollActiveAlerts() {
+        if (typeof firebase === 'undefined' || !firebase.firestore) return;
+        try {
+            const db = firebase.firestore();
+            const fifteenMinsAgo = Date.now() - 15 * 60 * 1000;
+            const snap = await db.collection('sos_broadcasts').where('status', '==', 'active').get();
+            snap.forEach(doc => {
+                const data = doc.data();
+                if (data && data.status === 'active' && (!data.createdAt || data.createdAt > fifteenMinsAgo)) {
+                    handleIncomingBroadcast(data, data.senderTabId);
+                }
+            });
+        } catch (e) { }
     }
 
     /**
      * Process Incoming SOS Broadcast & check 1km radius
      */
-    function handleIncomingBroadcast(broadcast) {
+    function handleIncomingBroadcast(broadcast, senderTab) {
         if (!broadcast || !broadcast.latitude || !broadcast.longitude) return;
 
-        const myMobile = (typeof SafeYatraDB !== 'undefined' ? SafeYatraDB.getLoggedInMobile() : "") || localStorage.getItem('travelsathi_logged_mobile') || "";
-        
-        // Don't alert the user who triggered the SOS
-        if (myMobile && broadcast.senderMobile && myMobile.replace(/\s+/g, '') === broadcast.senderMobile.replace(/\s+/g, '')) {
+        // Prevent self-alerting in the exact same tab that pressed SOS
+        if (senderTab && senderTab === tabSessionId) {
             return;
         }
 
-        // Get Current Location to verify radius <= 1 km
+        // Fast-path: Check against cached location
+        if (cachedUserLocation) {
+            checkProximityAndAlert(cachedUserLocation.lat, cachedUserLocation.lng, broadcast);
+            return;
+        }
+
+        // Fresh GPS check
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition((pos) => {
-                const myLat = pos.coords.latitude;
-                const myLng = pos.coords.longitude;
-
-                const distanceKm = calculateDistance(myLat, myLng, broadcast.latitude, broadcast.longitude);
-                console.log(`[TravelSathi Nearby SOS] Broadcast received. Distance: ${distanceKm.toFixed(3)} km (Radius limit: ${RADIUS_LIMIT_KM} km)`);
-
-                if (distanceKm <= RADIUS_LIMIT_KM) {
-                    showNearbySOSAlert(broadcast, distanceKm);
-                }
-            }, (err) => {
-                // If GPS is unavailable, trigger alert with estimated proximity
-                console.warn("GPS unavailable for proximity check. Triggering alert fallback.");
-                showNearbySOSAlert(broadcast, 0.45);
+                cachedUserLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                checkProximityAndAlert(pos.coords.latitude, pos.coords.longitude, broadcast);
+            }, () => {
+                // If GPS is disabled, use last known or default proximity
+                const fallbackLat = parseFloat(sessionStorage.getItem('travelsathi_last_lat')) || 27.1767;
+                const fallbackLng = parseFloat(sessionStorage.getItem('travelsathi_last_lng')) || 78.0081;
+                checkProximityAndAlert(fallbackLat, fallbackLng, broadcast);
             }, {
                 enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 10000
+                timeout: 3500,
+                maximumAge: 15000
             });
+        } else {
+            checkProximityAndAlert(27.1767, 78.0081, broadcast);
+        }
+    }
+
+    function checkProximityAndAlert(myLat, myLng, broadcast) {
+        const distanceKm = calculateDistance(myLat, myLng, broadcast.latitude, broadcast.longitude);
+        console.log(`[TravelSathi Nearby SOS Proximity] Distance: ${(distanceKm * 1000).toFixed(0)}m (Radius threshold: 1000m)`);
+
+        // Check if within 1km radius (1.0 km)
+        if (distanceKm <= RADIUS_LIMIT_KM) {
+            showNearbySOSAlert(broadcast, distanceKm);
         }
     }
 
     function handleResolveBroadcast(payload) {
-        if (activeAlertData && activeAlertData.id === payload.id) {
+        if (activeAlertData && payload && (activeAlertData.id === payload.id || activeAlertData.senderMobile === payload.senderMobile)) {
             closeNearbySOSAlert();
         }
     }
@@ -220,19 +293,21 @@ const NearbySOS = (function () {
         const navBtn = document.getElementById('nearbySOSNavigateBtn');
         const callBtn = document.getElementById('nearbySOSCallBtn');
 
-        const distText = distanceKm < 1 
-            ? `${Math.round(distanceKm * 1000)} meters away` 
-            : `${distanceKm.toFixed(2)} km away`;
+        const distMeters = Math.round(distanceKm * 1000);
+        const distText = distMeters < 1000 
+            ? `${distMeters} meters away from you` 
+            : `${distanceKm.toFixed(2)} km away from you`;
 
         if (nameEl) nameEl.textContent = broadcast.senderName || "Fellow Tourist";
         if (distEl) distEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> <strong>${distText}</strong> (Within 1 km safety radius)`;
-        if (timeEl) timeEl.textContent = "Just now";
-        if (phoneEl) phoneEl.textContent = broadcast.senderMobile ? `+91 ${broadcast.senderMobile}` : "Mobile available";
+        if (timeEl) timeEl.textContent = "Just now • LIVE ALERT";
+        if (phoneEl) phoneEl.textContent = broadcast.senderMobile ? `+91 ${broadcast.senderMobile}` : "Emergency Contact Available";
 
         if (callBtn && broadcast.senderMobile) {
             callBtn.href = `tel:${broadcast.senderMobile}`;
         }
 
+        // Open live directions in Google Maps
         if (navBtn) {
             navBtn.onclick = function () {
                 closeNearbySOSAlert();
@@ -243,7 +318,7 @@ const NearbySOS = (function () {
 
         modal.classList.add('active');
 
-        // Play Attention Siren
+        // Play Attention Alarm
         playAlertTone();
 
         if (navigator.vibrate) {
@@ -290,7 +365,7 @@ const NearbySOS = (function () {
             }, 380);
 
         } catch (e) {
-            console.warn("Audio tone error:", e);
+            console.warn("Audio tone note:", e);
         }
     }
 
@@ -303,7 +378,7 @@ const NearbySOS = (function () {
     }
 
     /**
-     * Haversine formula to calculate distance between two coordinates in km
+     * Haversine distance formula in kilometers
      */
     function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371; // Earth radius in km
@@ -317,7 +392,7 @@ const NearbySOS = (function () {
     }
 
     /**
-     * Inject Floating & Fullscreen Nearby SOS Modal HTML & CSS into DOM
+     * Inject Emergency Modal HTML & CSS into DOM
      */
     function injectAlertDOM() {
         if (document.getElementById('travelSathiNearbySOSModal')) return;
@@ -330,7 +405,7 @@ const NearbySOS = (function () {
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
                     <div class="nearby-sos-title-wrap">
-                        <span class="nearby-sos-urgent-badge">🚨 CRITICAL EMERGENCY • 1KM RADIUS</span>
+                        <span class="nearby-sos-urgent-badge">🚨 LIVE 1KM PROXIMITY ALERT</span>
                         <h2 class="nearby-sos-heading">Nearby Tourist in Distress!</h2>
                     </div>
                 </div>
@@ -347,12 +422,12 @@ const NearbySOS = (function () {
                         <div class="tourist-meta">
                             <h4 id="nearbySOSUserName">Fellow Tourist</h4>
                             <p id="nearbySOSPhone">+91 1234567890</p>
-                            <span class="time-tag" id="nearbySOSTime">Just now</span>
+                            <span class="time-tag" id="nearbySOSTime">Just now • LIVE</span>
                         </div>
                     </div>
 
                     <p class="nearby-sos-instruction">
-                        A TravelSathi user within 1 km has triggered an emergency SOS. Please render assistance or notify local authorities immediately.
+                        A TravelSathi user within 1 km has triggered an emergency SOS. Please open Google Maps directions to render assistance or alert authorities immediately.
                     </p>
                 </div>
 
@@ -610,49 +685,39 @@ const NearbySOS = (function () {
     }
 
     /**
-     * Test / Simulation Helper: Simulates a nearby user triggering SOS 400m away
+     * Test / Simulation Helper: Simulates a real nearby tourist SOS alert 350m away
      */
-    function simulateNearbySOS(distKm) {
-        getCurrentPositionFallback((pos) => {
-            const myLat = pos.lat;
-            const myLng = pos.lng;
+    function simulateNearbySOS() {
+        const curLat = cachedUserLocation ? cachedUserLocation.lat : 27.1767;
+        const curLng = cachedUserLocation ? cachedUserLocation.lng : 78.0081;
 
-            // Offset coordinates slightly (~400m)
-            const simulatedLat = myLat + 0.0035;
-            const simulatedLng = myLng + 0.0035;
+        // Offset coordinates by ~350 meters
+        const simulatedLat = curLat + 0.0031;
+        const simulatedLng = curLng + 0.0031;
 
-            const simPayload = {
-                id: `sim_sos_${Date.now()}`,
-                senderMobile: "9876543210",
-                senderName: "Priya Sharma (Tourist)",
-                latitude: simulatedLat,
-                longitude: simulatedLng,
-                emergencyContact: "9876543210",
-                bloodGroup: "B+",
-                message: "Emergency SOS triggered! Nearby assistance requested.",
-                status: "active",
-                createdAt: Date.now()
-            };
+        const simPayload = {
+            id: `sim_sos_${Date.now()}`,
+            senderMobile: "9876543210",
+            senderName: "Priya Sharma (Tourist)",
+            latitude: simulatedLat,
+            longitude: simulatedLng,
+            emergencyContact: "9876543210",
+            bloodGroup: "B+",
+            message: "Emergency SOS triggered! Immediate assistance requested.",
+            status: "active",
+            createdAt: Date.now()
+        };
 
-            console.log("Simulating Nearby SOS within 1km radius:", simPayload);
-            handleIncomingBroadcast(simPayload);
-        });
+        console.log("[TravelSathi] Simulating 1km Nearby SOS Alert:", simPayload);
+        showNearbySOSAlert(simPayload, 0.35);
     }
 
-    function getCurrentPositionFallback(cb) {
-        if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition((p) => {
-                cb({ lat: p.coords.latitude, lng: p.coords.longitude });
-            }, () => {
-                cb({ lat: 27.1767, lng: 78.0081 });
-            }, { timeout: 3000 });
-        } else {
-            cb({ lat: 27.1767, lng: 78.0081 });
-        }
+    // Auto-start listening on script load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startListening);
+    } else {
+        startListening();
     }
-
-    // Auto-start listening on load
-    startListening();
 
     return {
         broadcastSOS: broadcastSOS,
