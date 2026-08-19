@@ -8,12 +8,21 @@
 const NearbySOS = (function () {
     const RADIUS_LIMIT_KM = 1.0; // 1.0 km radius threshold
     
-    // Unique session ID for this specific browser tab/window (enables instant multi-tab & multi-device testing)
+    // Unique session ID for this specific browser tab/window (enables multi-tab & multi-device isolation)
     let tabSessionId = sessionStorage.getItem('travelsathi_tab_session_id');
     if (!tabSessionId) {
         tabSessionId = 'tab_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
         sessionStorage.setItem('travelsathi_tab_session_id', tabSessionId);
     }
+
+    // Set of dismissed/rejected broadcast IDs so a dismissed alert NEVER re-triggers
+    let dismissedAlertIds = new Set();
+    try {
+        const storedDismissed = sessionStorage.getItem('travelsathi_dismissed_sos_ids');
+        if (storedDismissed) {
+            JSON.parse(storedDismissed).forEach(id => dismissedAlertIds.add(id));
+        }
+    } catch (e) { }
 
     let alertAudioCtx = null;
     let alertToneInterval = null;
@@ -22,7 +31,6 @@ const NearbySOS = (function () {
     let sosBroadcastChannel = null;
     let cachedUserLocation = null;
     let pollingInterval = null;
-    let activeAlertsProcessed = new Set();
 
     // 1. Keep track of user's current GPS position
     initLocationTracker();
@@ -100,7 +108,6 @@ const NearbySOS = (function () {
         let lat = customCoords && customCoords.lat ? parseFloat(customCoords.lat) : (cachedUserLocation ? cachedUserLocation.lat : null);
         let lng = customCoords && customCoords.lng ? parseFloat(customCoords.lng) : (cachedUserLocation ? cachedUserLocation.lng : null);
 
-        // Fallback default coordinates if GPS is unavailable
         if (!lat || !lng) {
             lat = parseFloat(sessionStorage.getItem('travelsathi_last_lat')) || 27.1767;
             lng = parseFloat(sessionStorage.getItem('travelsathi_last_lng')) || 78.0081;
@@ -218,6 +225,11 @@ const NearbySOS = (function () {
             const snap = await db.collection('sos_broadcasts').where('status', '==', 'active').get();
             snap.forEach(doc => {
                 const data = doc.data();
+                const alertId = data.id || doc.id;
+                // Skip if already dismissed
+                if (alertId && dismissedAlertIds.has(alertId)) {
+                    return;
+                }
                 if (data && data.status === 'active' && (!data.createdAt || data.createdAt > fifteenMinsAgo)) {
                     handleIncomingBroadcast(data, data.senderTabId);
                 }
@@ -230,6 +242,18 @@ const NearbySOS = (function () {
      */
     function handleIncomingBroadcast(broadcast, senderTab) {
         if (!broadcast || !broadcast.latitude || !broadcast.longitude) return;
+
+        const alertId = broadcast.id;
+
+        // CRITICAL FIX: If user has dismissed/rejected this alert ID, NEVER show it again
+        if (alertId && dismissedAlertIds.has(alertId)) {
+            return;
+        }
+
+        // If this alert is already currently being shown on screen, don't duplicate
+        if (activeAlertData && activeAlertData.id === alertId) {
+            return;
+        }
 
         // Prevent self-alerting in the exact same tab that pressed SOS
         if (senderTab && senderTab === tabSessionId) {
@@ -263,6 +287,11 @@ const NearbySOS = (function () {
     }
 
     function checkProximityAndAlert(myLat, myLng, broadcast) {
+        const alertId = broadcast.id;
+        if (alertId && dismissedAlertIds.has(alertId)) {
+            return;
+        }
+
         const distanceKm = calculateDistance(myLat, myLng, broadcast.latitude, broadcast.longitude);
         console.log(`[TravelSathi Nearby SOS Proximity] Distance: ${(distanceKm * 1000).toFixed(0)}m (Radius threshold: 1000m)`);
 
@@ -282,6 +311,11 @@ const NearbySOS = (function () {
      * Render & Display the Urgent Nearby SOS Modal
      */
     function showNearbySOSAlert(broadcast, distanceKm) {
+        const alertId = broadcast.id;
+        if (alertId && dismissedAlertIds.has(alertId)) {
+            return;
+        }
+
         activeAlertData = broadcast;
         const modal = document.getElementById('travelSathiNearbySOSModal');
         if (!modal) return;
@@ -310,7 +344,8 @@ const NearbySOS = (function () {
         // Open live directions in Google Maps
         if (navBtn) {
             navBtn.onclick = function () {
-                closeNearbySOSAlert();
+                // Dismiss alert permanently on navigation
+                dismissNearbySOSAlert();
                 const url = `https://www.google.com/maps/dir/?api=1&destination=${broadcast.latitude},${broadcast.longitude}`;
                 window.open(url, '_blank');
             };
@@ -324,6 +359,20 @@ const NearbySOS = (function () {
         if (navigator.vibrate) {
             navigator.vibrate([400, 200, 400, 200, 600]);
         }
+    }
+
+    /**
+     * Dismiss / Reject the alert permanently for this session so it NEVER re-opens
+     */
+    function dismissNearbySOSAlert() {
+        if (activeAlertData && activeAlertData.id) {
+            dismissedAlertIds.add(activeAlertData.id);
+            try {
+                sessionStorage.setItem('travelsathi_dismissed_sos_ids', JSON.stringify(Array.from(dismissedAlertIds)));
+            } catch (e) { }
+            console.log("[TravelSathi Nearby SOS] Alert permanently dismissed:", activeAlertData.id);
+        }
+        closeNearbySOSAlert();
     }
 
     function closeNearbySOSAlert() {
@@ -672,7 +721,7 @@ const NearbySOS = (function () {
 
         const dismissBtn = document.getElementById('nearbySOSDismissBtn');
         if (dismissBtn) {
-            dismissBtn.addEventListener('click', closeNearbySOSAlert);
+            dismissBtn.addEventListener('click', dismissNearbySOSAlert);
         }
     }
 
@@ -724,7 +773,8 @@ const NearbySOS = (function () {
         resolveActiveSOS: resolveActiveSOS,
         startListening: startListening,
         simulateNearbySOS: simulateNearbySOS,
-        calculateDistance: calculateDistance
+        calculateDistance: calculateDistance,
+        dismissNearbySOSAlert: dismissNearbySOSAlert
     };
 })();
 
