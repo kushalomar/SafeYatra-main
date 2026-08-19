@@ -11,13 +11,13 @@
     --accent-amber: #F59E0B;
     --accent-red: #EF4444;
     --accent-purple: #8B5CF6;
-    --bg-page: #F5F7FB;
-    --card-bg: #FFFFFF;
+    --bg-page: #F4EFE6;
+    --card-bg: #FAF6EE;
     --text-dark: #1E293B;
     --text-muted: #64748B;
     --text-light: #94A3B8;
-    --border-color: #E2E8F0;
-    --border-subtle: rgba(226, 232, 240, 0.8);
+    --border-color: #E2D7C7;
+    --border-subtle: rgba(226, 215, 199, 0.8);
     --radius-xl: 24px;
     --radius-lg: 20px;
     --radius-md: 14px;
@@ -118,9 +118,21 @@ body.weather-page-body {
 }
 
 @keyframes pulseGlow {
-    0% { transform: scale(0.9); opacity: 0.8; }
-    50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px var(--primary-green); }
-    100% { transform: scale(0.9); opacity: 0.8; }
+    0% {
+        transform: scale(0.9);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.3);
+        opacity: 1;
+        box-shadow: 0 0 12px var(--primary-green);
+    }
+
+    100% {
+        transform: scale(0.9);
+        opacity: 0.8;
+    }
 }
 
 .topbar-right {
@@ -181,7 +193,9 @@ body.weather-page-body {
 }
 
 @keyframes spin {
-    100% { transform: rotate(360deg); }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* ==========================================================================
@@ -354,10 +368,11 @@ body.weather-page-body {
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-.dest-chip:hover, .dest-chip.active {
+.dest-chip:hover,
+.dest-chip.active {
     background: var(--accent-blue-light);
     border-color: var(--accent-blue);
     color: var(--accent-blue-dark);
@@ -777,7 +792,8 @@ body.weather-page-body {
     color: var(--accent-blue);
 }
 
-.hourly-loading-placeholder, .daily-loading-placeholder {
+.hourly-loading-placeholder,
+.daily-loading-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -884,7 +900,9 @@ body.weather-page-body {
 }
 
 /* Badges inside Metric cards */
-.uv-level-badge, .wind-dir-badge, .metric-status-tag {
+.uv-level-badge,
+.wind-dir-badge,
+.metric-status-tag {
     font-size: 11px;
     font-weight: 700;
     padding: 3px 8px;
@@ -1194,24 +1212,24 @@ body.weather-page-body {
     .hero-city-name {
         font-size: 22px;
     }
-    
+
     .hero-temp-value {
         font-size: 52px;
     }
-    
+
     .weather-icon-animated {
         width: 76px;
         height: 76px;
     }
-    
+
     .weather-hero-icon {
         font-size: 38px;
     }
-    
+
     .forecast-temp-range-col {
         min-width: 110px;
     }
-    
+
     .forecast-cond-text {
         display: none;
     }
@@ -1384,7 +1402,7 @@ body.weather-page-body {
     -webkit-overflow-scrolling: touch;
 }
 
-.weather-popup-scroll > * {
+.weather-popup-scroll>* {
     flex-shrink: 0;
 }
 

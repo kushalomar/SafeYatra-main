@@ -18,13 +18,15 @@
     padding: 0px 6px;
 }
 form{
-    background-color: #fff;
+    background-color: #FFFDF9;
     display: flex;
     justify-content: center;
-    border-radius: 6px;
-    height: 39px;
-    padding: 6px;
+    border-radius: 18px;
+    height: 44px;
+    padding: 6px 14px;
     align-items: center;
+    border: 1.5px solid rgba(216, 204, 188, 0.8);
+    box-shadow: 0 4px 16px rgba(175, 155, 130, 0.2);
 }
 .map-container{
     width: 100%;
@@ -35,6 +37,7 @@ form{
     outline:none;
     width: 90%;
     font-size:16px;
+    background: transparent;
 }
 
 /* footer */
@@ -45,12 +48,14 @@ form{
     left:0;
     width:100%;
     height:75px;
-    background:#ffffff;
+    background: linear-gradient(0deg, #FFFDF9 0%, #FAF4EB 100%);
     display:flex;
     justify-content:space-around;
     align-items:center;
-    border-top:1px solid #E6EAF0;
-    box-shadow:0 -6px 20px rgba(0,0,0,.06);
+    border-top: 1.5px solid rgba(216, 204, 188, 0.75);
+    border-top-left-radius: 26px;
+    border-top-right-radius: 26px;
+    box-shadow: 0 -8px 25px rgba(175, 155, 130, 0.14);
     z-index:1000;
 }
 

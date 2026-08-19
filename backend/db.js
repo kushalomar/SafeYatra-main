@@ -14,12 +14,13 @@ const SafeYatraDB = {
 
     // 2. Active Session Mobile Number
     getLoggedInMobile: function () {
-        return localStorage.getItem('safeyatra_logged_mobile') || "";
+        return localStorage.getItem('travelsathi_logged_mobile') || localStorage.getItem('safeyatra_logged_mobile') || "";
     },
 
     setLoggedInMobile: function (mobile) {
         if (!mobile) return;
         const cleanMobile = mobile.replace(/\s+/g, '');
+        localStorage.setItem('travelsathi_logged_mobile', cleanMobile);
         localStorage.setItem('safeyatra_logged_mobile', cleanMobile);
     },
 
@@ -149,7 +150,9 @@ const SafeYatraDB = {
 
     // 7. Logout User
     logout: function () {
+        localStorage.removeItem('travelsathi_logged_mobile');
         localStorage.removeItem('safeyatra_logged_mobile');
+        localStorage.removeItem('travelsathi_user_profile');
         localStorage.removeItem('safeyatra_user_profile');
         if (window.firebase && window.firebase.auth) {
             try {
@@ -161,3 +164,4 @@ const SafeYatraDB = {
 };
 
 window.SafeYatraDB = SafeYatraDB;
+window.TravelSathiDB = SafeYatraDB;

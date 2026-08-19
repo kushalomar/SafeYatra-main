@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SafeYatra AI - Smart Tourist Safety</title>
+    <title>TravelSathi - Smart Tourist Companion</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Web App Manifest & PWA Meta for Bubblewrap / PWA Builder / GitHub Pages -->
     <link rel="manifest" href="manifest.json">
@@ -11,7 +19,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SafeYatra AI">
+    <meta name="apple-mobile-web-app-title" content="TravelSathi">
 
     <!-- App Icons -->
     <link rel="icon" type="image/png" sizes="192x192" href="assests/icon-192.png">
@@ -24,7 +32,7 @@
             window.addEventListener('load', function () {
                 navigator.serviceWorker.register('./sw.js')
                     .then(function (reg) {
-                        console.log('SafeYatra AI Service Worker registered successfully:', reg.scope);
+                        console.log('TravelSathi Service Worker registered successfully:', reg.scope);
                     })
                     .catch(function (err) {
                         console.warn('Service Worker registration failed:', err);
@@ -33,7 +41,7 @@
         }
 
         // Check if user is logged in and redirect
-        var loggedMobile = localStorage.getItem('safeyatra_logged_mobile');
+        var loggedMobile = localStorage.getItem('travelsathi_logged_mobile') || localStorage.getItem('safeyatra_logged_mobile');
         if (loggedMobile && loggedMobile.trim() !== "") {
             window.location.href = "frontend/html/index.html";
         } else {
@@ -41,11 +49,18 @@
         }
     </script>
 </head>
-<body style="margin: 0; background-color: #F5F7FB; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;">
-    <div style="text-align: center; color: #166534;">
-        <img src="assests/icon-192.png" alt="SafeYatra" style="width: 80px; height: 80px; margin-bottom: 16px; border-radius: 20px;">
-        <h2 style="margin: 0; font-size: 20px; font-weight: 800;">SafeYatra</h2>
-        <p style="margin: 8px 0 0; font-size: 14px; color: #64748B;">Launching travel safety companion...</p>
+
+<body
+    style="margin: 0; background-color: #0b1d0b; font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;">
+    <div style="text-align: center; color: #ffffff;">
+        <img src="assests/logo.png" alt="TravelSathi"
+            style="width: 88px; height: 88px; margin-bottom: 18px; border-radius: 50%; box-shadow: 0 0 30px rgba(34, 197, 94, 0.45);">
+        <h2
+            style="margin: 0; font-size: 26px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: #FFFFFF;">
+            TRAVELSATHI</h2>
+        <p style="margin: 8px 0 0; font-size: 14px; color: #86efac; font-weight: 500; letter-spacing: 0.3px;">Launching
+            your tourist safety companion...</p>
     </div>
 </body>
+
 </html>

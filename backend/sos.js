@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function getSmsMessage() {
         const mapsUrl = getMapsUrl();
-        return `EMERGENCY! I need immediate help. My live location: ${mapsUrl} (Sent via SafeYatra AI Emergency Hub)`;
+        return `EMERGENCY! I need immediate help. My live location: ${mapsUrl} (Sent via TravelSathi Emergency Hub)`;
     }
 
     function updateSmsLinks() {
@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         shareLocBtn.addEventListener('click', async () => {
             const url = getMapsUrl();
             const shareData = {
-                title: 'SafeYatra AI - Live Location',
+                title: 'TravelSathi - Live Location',
                 text: `Here is my current live GPS location: ${url}`,
                 url: url
             };

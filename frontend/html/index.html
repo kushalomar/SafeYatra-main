@@ -4,7 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeYatra</title>
+    <title>TravelSathi</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Web App Manifest & PWA Meta for Bubblewrap / PWA Builder / GitHub Pages -->
     <link rel="manifest" href="../../manifest.json">
@@ -12,7 +19,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SafeYatra">
+    <meta name="apple-mobile-web-app-title" content="TravelSathi">
 
     <!-- App Icons -->
     <link rel="icon" type="image/png" sizes="192x192" href="../../assests/icon-192.png">
@@ -39,10 +46,8 @@
 <body>
     <header class="topbar">
         <div class="logo">
-            <div class="logo-icon">
-                <i class="fa-solid fa-shield fa-lg fa-canvas-square" style="color: rgb(255, 255, 255);"></i>
-            </div>
-            <span>SafeYatra</span>
+            <img src="../../assests/logo.png" alt="TravelSathi Logo" class="topbar-logo-img">
+            <span>TRAVELSATHI</span>
         </div>
 
         <div class="top-icons">
@@ -75,7 +80,7 @@
 
         <!-- <div class="id-details">
             <div>
-                <span class="id-header-label">SAFE YATRA CARD</span>
+                <span class="id-header-label">TRAVELSATHI CARD</span>
                 <h3 id="displayTouristNameIndex" class="id-user-name">Loading...</h3>
 
                 <div class="id-verified-badge">
@@ -314,7 +319,7 @@
                         </div>
                         <div>
                             <h3 id="profilePopupTitle" class="profile-popup-title">Tourist Profile</h3>
-                            <span class="profile-popup-subtitle">SafeYatra Smart Pass</span>
+                            <span class="profile-popup-subtitle">TravelSathi Smart Pass</span>
                         </div>
                     </div>
                     <button id="closeProfilePopupBtn" class="profile-popup-close" title="Close Profile"
@@ -358,7 +363,7 @@
                 <!-- 2. Blue Tourist ID Card -->
                 <div class="tourist-id-card">
                     <div class="tourist-id-details">
-                        <span class="id-country-tag">SAFE YATRA • VERIFIED USER</span>
+                        <span class="id-country-tag">TRAVELSATHI • VERIFIED USER</span>
                         <h3 id="displayTouristName" class="id-name"></h3>
                         <p class="id-detail-line valid-till">Status: Active &amp; Protected</p>
                     </div>

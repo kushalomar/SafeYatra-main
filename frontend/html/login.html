@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeYatra AI - Mobile OTP Login</title>
+    <title>TravelSathi - Mobile OTP Login</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
     <!-- Web App Manifest & PWA Meta for Bubblewrap / PWA Builder / GitHub Pages -->
     <link rel="manifest" href="../../manifest.json">
@@ -12,7 +17,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SafeYatra AI">
+    <meta name="apple-mobile-web-app-title" content="TravelSathi">
 
     <!-- App Icons -->
     <link rel="icon" type="image/png" sizes="192x192" href="../../assests/icon-192.png">
@@ -27,6 +32,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
                 navigator.serviceWorker.register('../../sw.js')
+                    .then(function (reg) { console.log('SW Registered:', reg.scope); })
                     .catch(function (err) { console.warn('SW Error:', err); });
             });
         }
@@ -39,11 +45,9 @@
 
         <!-- Top Header Logo -->
         <div class="login-brand-header">
-            <div class="brand-logo-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <h2>SafeYatra AI</h2>
-            <p>Smart & Secure Tourist Authentication</p>
+            <img src="../../assests/logo.png" alt="TravelSathi" class="brand-logo-img">
+            <h2>TRAVELSATHI</h2>
+            <p>Smart & Secure Tourist Companion</p>
         </div>
 
         <!-- Main Auth Card -->
@@ -194,7 +198,7 @@
         </div>
 
         <!-- Footer Copyright -->
-        <p class="login-footer-text">SafeYatra AI • Firebase Auth & Firestore Secured</p>
+        <p class="login-footer-text">TravelSathi • Firebase Auth & Firestore Secured</p>
 
     </div>
 
@@ -206,7 +210,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- SafeYatra Database & Auth Scripts -->
+    <!-- TravelSathi Database & Auth Scripts -->
     <script src="../../backend/firebase-config.js"></script>
     <script src="../../backend/db.js"></script>
     <script src="../../backend/login.js"></script>
